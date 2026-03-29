@@ -57,14 +57,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
 .cart-empty .big-icon{font-size:3.5rem;}
 .cart-empty p{font-size:0.85rem;}
 .cart-empty .sub{font-size:0.72rem;color:#ddd;}
-
-/* ── CART HEADER BAR ── */
-.cart-header-bar{display:flex;align-items:center;justify-content:space-between;padding:0.38rem 0.85rem;background:#f0ece4;border-bottom:1.5px solid #e0dbd0;flex-shrink:0;}
-.cart-count-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--soft);letter-spacing:0.1em;text-transform:uppercase;}
-.clear-all-btn{background:#fff0f0;border:1.5px solid #ffc5c5;color:#c0392b;border-radius:6px;padding:0.22rem 0.6rem;font-size:0.65rem;font-family:'IBM Plex Sans',sans-serif;font-weight:700;cursor:pointer;letter-spacing:0.02em;}
-.clear-all-btn:active{background:#ffc5c5;}
-
-.cart-item{padding:0.55rem 0.85rem 0.55rem 0.7rem;border-bottom:1.5px solid #eeece8;display:flex;align-items:center;gap:0.45rem;position:relative;}
+.cart-item{padding:0.6rem 0.85rem;border-bottom:1.5px solid #eeece8;display:flex;align-items:center;gap:0.5rem;}
 .cart-item:nth-child(even){background:#f8f6f2;}
 .ci-num{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:#ccc;min-width:16px;text-align:right;flex-shrink:0;}
 .ci-body{flex:1;min-width:0;}
@@ -73,11 +66,8 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
 .ci-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
 .ci-total{font-family:'IBM Plex Mono',monospace;font-size:0.9rem;font-weight:700;color:var(--ink);white-space:nowrap;}
 .ci-disc-badge{background:#0d0d0d;color:white;font-size:0.58rem;font-family:'IBM Plex Mono',monospace;padding:1px 5px;border-radius:4px;}
-
-/* ── DELETE BUTTON — bigger, red ── */
-.ci-del{background:#fff0f0;border:1.5px solid #ffc5c5;color:#c0392b;font-size:0.78rem;cursor:pointer;padding:0 0.42rem;height:28px;border-radius:6px;flex-shrink:0;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
-.ci-del:active{background:#c0392b;color:white;border-color:#c0392b;}
-
+.ci-del{background:none;border:none;color:#ccc;font-size:0.85rem;cursor:pointer;padding:3px 5px;flex-shrink:0;}
+.ci-del:active{color:#c00;}
 .qty-ctrl{display:flex;align-items:center;gap:0.25rem;}
 .qty-btn{width:25px;height:25px;border-radius:5px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--ink);}
 .qty-btn:active{background:var(--ink);color:white;border-color:var(--ink);}
@@ -174,11 +164,13 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
   .receipt-action-btns,.modal-handle { display:none !important; }
   *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
   .receipt                        { border:none !important; border-radius:0 !important; }
+  /* Header */
   .r-hdr                          { background:#000 !important; padding:3mm 3.5mm 2.5mm !important; }
   .r-store-name                   { color:#fff !important; font-size:15pt !important; }
   .r-store-sub                    { color:rgba(255,255,255,0.75) !important; font-size:5.5pt !important; }
   .r-meta                         { color:rgba(255,255,255,0.8) !important; font-size:6pt !important; }
   .r-cust                         { color:#fff !important; font-size:6.5pt !important; border-top-color:rgba(255,255,255,0.35) !important; }
+  /* Table */
   .r-tbl-hdr                      { background:#ddd !important; color:#000 !important; font-size:5.5pt !important; padding:1.5mm 3.5mm !important; }
   .r-items                        { border:none !important; }
   .r-item                         { padding:1.8mm 3.5mm !important; border-bottom:0.4pt solid #bbb !important; }
@@ -187,16 +179,20 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
   .r-item-detail                  { color:#444 !important; font-size:5.5pt !important; }
   .r-disc-tag                     { background:#000 !important; color:#fff !important; font-size:5pt !important; }
   .r-item-amt                     { color:#000 !important; font-size:8pt !important; font-weight:700 !important; }
+  /* Totals */
   .r-totals                       { background:#ebebeb !important; border:none !important; padding:2mm 3.5mm !important; }
   .r-row                          { color:#333 !important; font-size:7pt !important; }
   .r-row.saved                    { color:#000 !important; font-weight:700 !important; font-size:7.5pt !important; }
+  /* Grand total */
   .r-grand                        { background:#000 !important; padding:2.5mm 3.5mm !important; }
   .r-grand-lbl                    { color:rgba(255,255,255,0.65) !important; font-size:5.5pt !important; }
   .r-grand-amt                    { color:#fff !important; font-size:14pt !important; }
+  /* Instagram / QR */
   .r-insta                        { border:none !important; border-top:0.5pt solid #bbb !important; padding:2mm 3.5mm !important; }
   .r-insta-title                  { color:#000 !important; font-size:7pt !important; }
   .r-insta-handle                 { color:#222 !important; font-size:7pt !important; }
   .r-insta-sub                    { color:#555 !important; font-size:5.5pt !important; }
+  /* Footer */
   .r-foot                         { border:none !important; border-top:0.5pt solid #bbb !important; padding:1.5mm 3.5mm !important; }
   .r-foot p                       { color:#555 !important; font-size:6pt !important; }
 }
@@ -232,7 +228,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
       <button onclick="saveDriveClientId()" style="padding:0.5rem 0.8rem;background:var(--ink);color:white;border:none;border-radius:7px;font-size:0.8rem;cursor:pointer;white-space:nowrap;font-weight:700;">Save</button>
     </div>
     <div id="driveHelpSteps" style="display:none;background:var(--light);border-radius:8px;padding:0.65rem 0.8rem;font-size:0.73rem;color:#555;line-height:1.75;">
-      <b>Steps:</b><br>1. Go to <b>console.cloud.google.com</b><br>2. Enable <b>Google Drive API</b><br>3. Credentials → Create → <b>OAuth 2.0 Client ID</b><br>4. Type: <b>Web application</b><br>5. Copy Client ID and paste above
+      <b>Steps:</b><br>1. Go to <b>console.cloud.google.com</b><br>2. Enable <b>Google Drive API</b><br>3. Credentials → Create → <b>OAuth 2.0 Client ID</b><br>4. Type: <b>Web application</b><br>5. Authorized JS origins:<br>&nbsp;&nbsp;<code style="background:#eee;padding:1px 4px;border-radius:3px;font-size:0.68rem;">https://physicsthenandnow1-spec.github.io</code><br>6. Copy Client ID and paste above
     </div>
   </div>
   <div id="driveSignedOut">
@@ -267,7 +263,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
   <div class="bill-form-area">
     <div class="form-label">+ Add item to bill</div>
     <div class="bill-main-row">
-      <input class="bill-name-inp" type="text" id="itemName" placeholder="Item name (e.g. Classmate Notebook)" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')addItem()">
+      <input class="bill-name-inp" type="text" id="itemName" placeholder="Item name (e.g. Classmate Notebook 172pg 4 Line)" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')addItem()">
       <button class="add-item-btn" onclick="addItem()">+</button>
     </div>
     <div class="bill-num-row">
@@ -276,13 +272,6 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
       <div class="num-field"><span class="num-label">Disc %</span><input class="num-inp" type="number" id="itemDisc" placeholder="0" min="0" max="100" inputmode="decimal" onkeydown="if(event.key==='Enter')addItem()"></div>
     </div>
   </div>
-
-  <!-- Cart header bar (shown only when items exist) -->
-  <div class="cart-header-bar" id="cartHeaderBar" style="display:none;">
-    <span class="cart-count-label" id="cartCountLabel">0 items</span>
-    <button class="clear-all-btn" onclick="clearAll()">🗑 Clear All</button>
-  </div>
-
   <div class="cart-scroll" id="cartScroll">
     <div class="cart-empty"><div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p></div>
   </div>
@@ -338,10 +327,10 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
 <div id="appToast"></div>
 
 <script>
-// ── CONFIG ──
+// ── CONFIG — change these to your real details ──
 const INSTAGRAM_HANDLE = 'infinitystore.haridwar';
 const INSTAGRAM_URL    = 'https://www.instagram.com/' + INSTAGRAM_HANDLE;
-const STORE_ADDRESS    = 'Haridwar, Uttarakhand';
+const STORE_ADDRESS    = 'Gajiwali, Shyampur, Haridwar, Uttrakhand';
 
 // ── STATE ──
 let cart=[], sales=JSON.parse(localStorage.getItem('infinity_sales')||'[]'), currentSale=null, activePage='bill';
@@ -378,58 +367,25 @@ function addItem(){
   document.getElementById('itemName').focus();
   renderCart();renderTotals();showToast('✓ '+name);
 }
-
-function removeItem(id){
-  cart=cart.filter(i=>i.id!==id);
-  renderCart();renderTotals();
-  showToast('🗑 Item removed');
-}
-
-function clearAll(){
-  if(cart.length===0)return;
-  if(!confirm('Remove all '+cart.length+' item(s) from the bill?'))return;
-  cart=[];
-  renderCart();renderTotals();
-  showToast('🗑 Bill cleared');
-}
-
+function removeItem(id){cart=cart.filter(i=>i.id!==id);renderCart();renderTotals();}
 function changeQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty=Math.max(1,i.qty+d);renderCart();renderTotals();}
 
 // ── RENDER CART ──
 function renderCart(){
   const s=document.getElementById('cartScroll');
-  const bar=document.getElementById('cartHeaderBar');
-  const lbl=document.getElementById('cartCountLabel');
   document.getElementById('billBtn').disabled=cart.length===0;
-
-  if(!cart.length){
-    bar.style.display='none';
-    s.innerHTML='<div class="cart-empty"><div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p></div>';
-    return;
-  }
-
-  bar.style.display='flex';
-  const total=cart.reduce((s,i)=>s+i.qty,0);
-  lbl.textContent=cart.length+' item'+(cart.length>1?'s':'')+' · '+total+' unit'+(total>1?'s':'');
-
+  if(!cart.length){s.innerHTML='<div class="cart-empty"><div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p></div>';return;}
   s.innerHTML=cart.map((item,idx)=>{
     const lt=item.price*item.qty*(1-(item.discount||0)/100);
     const db=item.discount>0?`<span class="ci-disc-badge">${item.discount}%off</span>`:'';
     return `<div class="cart-item">
       <span class="ci-num">${idx+1}</span>
-      <div class="ci-body">
-        <div class="ci-name">${item.name} ${db}</div>
-        <div class="ci-meta">₹${item.price.toFixed(2)} × ${item.qty}${item.discount>0?' · saved ₹'+(item.price*item.qty*item.discount/100).toFixed(2):''}</div>
-      </div>
+      <div class="ci-body"><div class="ci-name">${item.name} ${db}</div><div class="ci-meta">₹${item.price.toFixed(2)} × ${item.qty}${item.discount>0?' · saved ₹'+(item.price*item.qty*item.discount/100).toFixed(2):''}</div></div>
       <div class="ci-right">
         <span class="ci-total">₹${lt.toFixed(2)}</span>
-        <div class="qty-ctrl">
-          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
-          <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
-        </div>
+        <div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id},1)">+</button></div>
       </div>
-      <button class="ci-del" onclick="removeItem(${item.id})" title="Remove item">✕</button>
+      <button class="ci-del" onclick="removeItem(${item.id})">✕</button>
     </div>`;
   }).join('');
 }
@@ -536,76 +492,38 @@ async function showReceipt(sale){
   document.getElementById('receiptModal').classList.add('open');
 }
 
-// ── PDF  (multi-page safe) ──
+// ── PDF ──
 async function downloadPDF(sale){
   if(!window.jspdf)return;
   const{jsPDF}=window.jspdf;
-
-  // ── page dimensions ──
-  const W=80, PH=210;          // 80 mm wide, A5 height (210 mm)
-  const MARGIN_BOT=8;          // reserve 8 mm at bottom of every page
-  const SAFE_BOTTOM=PH-MARGIN_BOT; // content must stay above this
-
-  const doc=new jsPDF({unit:'mm',format:[W,PH],orientation:'portrait'});
+  const W=80,doc=new jsPDF({unit:'mm',format:[W,297],orientation:'portrait'});
   const now=new Date(sale.date);
   const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
   const ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-  const lm=3, rm=W-3, mid=W/2;
+  const lm=3,rm=W-3,mid=W/2;
   let y=7;
-  let pageNum=1;
 
-  // ── helpers ──────────────────────────────────────────
-  // Call before drawing anything that needs `neededMm` of vertical space.
-  // If it won't fit, adds a new page, reprints the column header, resets y.
-  function ensureSpace(neededMm){
-    if(y+neededMm > SAFE_BOTTOM){
-      // page-number footer on current page
-      doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,160,160);
-      doc.text('Page '+pageNum,mid,PH-3,{align:'center'});
-
-      doc.addPage([W,PH]);
-      pageNum++;
-      y=6;
-
-      // ── continuation header (compact) ──
-      doc.setFillColor(0,0,0);doc.rect(0,0,W,10,'F');
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(230,215,185);
-      doc.text('INFINITY STORE',mid,6.5,{align:'center'});
-      doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.setTextColor(180,175,165);
-      doc.text('(continued) '+sale.id,mid,10,{align:'center'});
-      y=16;
-
-      // reprint column header
-      doc.setFillColor(25,25,25);doc.rect(lm,y-3,rm-lm,6,'F');
-      doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
-      doc.text('ITEM',lm+1.5,y+0.5);
-      doc.text('QTY',mid-8,y+0.5,{align:'center'});
-      doc.text('RATE',mid+9,y+0.5,{align:'center'});
-      doc.text('AMT',rm-1,y+0.5,{align:'right'});
-      y+=7;
-    }
-  }
-
-  // ── PAGE 1 HEADER ────────────────────────────────────
+  // ── Header ──
   doc.setFillColor(0,0,0);doc.rect(0,0,W,21,'F');
   doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(230,215,185);
   doc.text('INFINITY STORE',mid,8.5,{align:'center'});
   doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(185,180,170);
-  doc.text('STATIONERY STORE · HARIDWAR',mid,13.5,{align:'center'});
+  doc.text('STATIONERY STORE · BAREILLY',mid,13.5,{align:'center'});
   doc.setFontSize(6);doc.setTextColor(155,150,140);
   doc.text(ds+'   '+ts,mid,18.5,{align:'center'});
   y=26;
 
-  // ── receipt meta ──
+  // ── Receipt meta ──
   doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(0,0,0);
   doc.text('Receipt: '+sale.id,lm,y);y+=5;
   if(sale.custName){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text('Customer: '+sale.custName,lm,y);y+=4.5;}
   if(sale.custPhone){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text('Phone:    '+sale.custPhone,lm,y);y+=4.5;}
   y+=1;
 
+  // ── Divider ──
   doc.setDrawColor(0,0,0);doc.setLineWidth(0.5);doc.line(lm,y,rm,y);y+=4;
 
-  // ── column header ──
+  // ── Table header ──
   doc.setFillColor(25,25,25);doc.rect(lm,y-3,rm-lm,6,'F');
   doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
   doc.text('ITEM',lm+1.5,y+0.5);
@@ -614,75 +532,45 @@ async function downloadPDF(sale){
   doc.text('AMT',rm-1,y+0.5,{align:'right'});
   y+=7;
 
-  // ── ITEMS LOOP ───────────────────────────────────────
+  // ── Items ──
   doc.setLineWidth(0.15);doc.setDrawColor(185,185,185);
-
   sale.items.forEach((item,idx)=>{
-    const d=item.discount||0, lt=item.price*item.qty*(1-d/100);
+    const d=item.discount||0,lt=item.price*item.qty*(1-d/100);
+    if(idx%2===0){doc.setFillColor(246,245,242);doc.rect(lm,y-3,rm-lm,8,'F');}
     const lines=doc.splitTextToSize(item.name,38);
-    const nh=lines.length*3.5;
-    const rowH=nh+(d>0?4:0)+3.5;   // total mm this row will consume
-
-    ensureSpace(rowH);              // ← page-break check
-
-    if(idx%2===0){doc.setFillColor(246,245,242);doc.rect(lm,y-3,rm-lm,rowH,'F');}
-
     doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(0,0,0);
     lines.forEach((ln,li)=>doc.text(ln,lm+1.5,y+li*3.5));
-
+    const nh=lines.length*3.5;
     doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(45,45,45);
     doc.text(String(item.qty),mid-8,y,{align:'center'});
     doc.text('Rs.'+item.price.toFixed(2),mid+9,y,{align:'center'});
     doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
     doc.text('Rs.'+lt.toFixed(2),rm-1,y,{align:'right'});
-
-    if(d>0){
-      doc.setFont('helvetica','italic');doc.setFontSize(5.5);doc.setTextColor(75,75,75);
-      doc.text(d+'% off · saved Rs.'+(item.price*item.qty*d/100).toFixed(2),lm+1.5,y+nh);
-      y+=3;
-    }
-    y+=nh+2;
-    doc.line(lm,y,rm,y);
-    y+=1.5;
+    if(d>0){doc.setFont('helvetica','italic');doc.setFontSize(5.5);doc.setTextColor(75,75,75);doc.text(d+'% off',lm+1.5,y+nh);y+=3;}
+    y+=nh+2;doc.line(lm,y,rm,y);y+=1.5;
   });
   y+=2;
 
-  // ── TOTALS BLOCK ─────────────────────────────────────
-  // Estimate height: 1 line separator + rows + grand-total box + footer + QR
-  const totalsEstimate=60;
-  ensureSpace(totalsEstimate);
-
+  // ── Totals ──
   doc.setLineWidth(0.5);doc.setDrawColor(0,0,0);doc.line(lm,y,rm,y);y+=3.5;
-
-  const tRow=(label,value)=>{
-    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(55,55,55);
+  const tR=(label,value,bold=false)=>{
+    doc.setFont('helvetica',bold?'bold':'normal');doc.setFontSize(7.5);
+    doc.setTextColor(bold?0:55,bold?0:55,bold?0:55);
     doc.text(label,lm+1.5,y);doc.text(value,rm-1,y,{align:'right'});y+=4.5;
   };
-  const tRowBold=(label,value)=>{
-    doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(0,0,0);
-    doc.text(label,lm+1.5,y);doc.text(value,rm-1,y,{align:'right'});y+=4.5;
-  };
-
-  tRow('Gross Total','Rs.'+sale.grossSubtotal.toFixed(2));
-  if((sale.itemDiscTotal||0)>0){
-    tRowBold('Item Savings','-Rs.'+sale.itemDiscTotal.toFixed(2));
-    tRow('Subtotal','Rs.'+sale.subtotal.toFixed(2));
-  }
+  tR('Gross Total','Rs.'+sale.grossSubtotal.toFixed(2));
+  if((sale.itemDiscTotal||0)>0)tR('Item Savings','-Rs.'+sale.itemDiscTotal.toFixed(2));
+  if((sale.itemDiscTotal||0)>0)tR('Subtotal','Rs.'+sale.subtotal.toFixed(2));
   if((sale.extraDiscAmt||0)>0){
     let l='Bill Discount';
     if((sale.extraPct||0)>0&&(sale.extraFlat||0)>0)l+=` (${sale.extraPct}%+Rs.${sale.extraFlat})`;
     else if((sale.extraPct||0)>0)l+=` (${sale.extraPct}%)`;
     else l+=` (Rs.${sale.extraFlat} flat)`;
-    tRowBold(l,'-Rs.'+sale.extraDiscAmt.toFixed(2));
+    tR(l,'-Rs.'+sale.extraDiscAmt.toFixed(2));
   }
-  // item count summary
-  const totalUnits=sale.items.reduce((s,i)=>s+i.qty,0);
-  doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(120,120,120);
-  doc.text(sale.items.length+' item type'+(sale.items.length>1?'s':')+' · '+totalUnits+' unit'+(totalUnits>1?'s':''),lm+1.5,y);y+=3.5;
-
   y+=1.5;
 
-  // ── grand total box ──
+  // ── Grand total ──
   doc.setFillColor(0,0,0);doc.rect(lm,y-2,rm-lm,12,'F');
   doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(195,188,170);
   doc.text('TOTAL PAYABLE',lm+2,y+5.5);
@@ -690,8 +578,7 @@ async function downloadPDF(sale){
   doc.text('Rs.'+sale.total.toFixed(2),rm-2,y+6,{align:'right'});
   y+=17;
 
-  // ── Instagram / QR ───────────────────────────────────
-  ensureSpace(30);
+  // ── Instagram QR ──
   doc.setLineDashPattern([1.5,1.5],0);
   doc.setDrawColor(160,160,160);doc.setLineWidth(0.3);
   doc.line(lm,y,rm,y);y+=3;doc.setLineDashPattern([],0);
@@ -709,18 +596,13 @@ async function downloadPDF(sale){
   doc.text('new arrivals!',tx,y+18);
   y+=qrS+5;
 
-  // ── thank-you footer ──
-  ensureSpace(14);
+  // ── Thank you ──
   doc.setLineDashPattern([1.5,1.5],0);
   doc.setDrawColor(160,160,160);doc.line(lm,y,rm,y);y+=4;doc.setLineDashPattern([],0);
   doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(20,20,20);
   doc.text('Thank you for shopping at Infinity Store!',mid,y,{align:'center'});y+=4;
   doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(90,90,90);
   doc.text('Please keep this receipt for future reference.',mid,y,{align:'center'});
-
-  // last page number
-  doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,160,160);
-  doc.text('Page '+pageNum+' of '+pageNum,mid,PH-3,{align:'center'});
 
   doc.save('Infinity-'+sale.id+'-'+ds.replace(/ /g,'-')+'.pdf');
 }
