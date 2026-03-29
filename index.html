@@ -157,44 +157,146 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
    Optimised for 80mm thermal or A5 laser print
 ═══════════════════════════════════════════════ */
 @media print {
-  @page { size:80mm auto; margin:3mm 2mm; }
-  body>*                          { display:none !important; }
-  .modal-overlay.open             { display:block !important; background:none !important; position:static !important; }
-  .receipt-modal                  { border-radius:0; padding:0; box-shadow:none; max-height:none; max-width:100%; animation:none; }
-  .receipt-action-btns,.modal-handle { display:none !important; }
-  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-  .receipt                        { border:none !important; border-radius:0 !important; }
-  /* Header */
-  .r-hdr                          { background:#000 !important; padding:3mm 3.5mm 2.5mm !important; }
-  .r-store-name                   { color:#fff !important; font-size:15pt !important; }
-  .r-store-sub                    { color:rgba(255,255,255,0.75) !important; font-size:5.5pt !important; }
-  .r-meta                         { color:rgba(255,255,255,0.8) !important; font-size:6pt !important; }
-  .r-cust                         { color:#fff !important; font-size:6.5pt !important; border-top-color:rgba(255,255,255,0.35) !important; }
-  /* Table */
-  .r-tbl-hdr                      { background:#ddd !important; color:#000 !important; font-size:5.5pt !important; padding:1.5mm 3.5mm !important; }
-  .r-items                        { border:none !important; }
-  .r-item                         { padding:1.8mm 3.5mm !important; border-bottom:0.4pt solid #bbb !important; }
-  .r-item:nth-child(even)         { background:#f2f2f2 !important; }
-  .r-item-name                    { color:#000 !important; font-size:8pt !important; font-weight:700 !important; }
-  .r-item-detail                  { color:#444 !important; font-size:5.5pt !important; }
-  .r-disc-tag                     { background:#000 !important; color:#fff !important; font-size:5pt !important; }
-  .r-item-amt                     { color:#000 !important; font-size:8pt !important; font-weight:700 !important; }
-  /* Totals */
-  .r-totals                       { background:#ebebeb !important; border:none !important; padding:2mm 3.5mm !important; }
-  .r-row                          { color:#333 !important; font-size:7pt !important; }
-  .r-row.saved                    { color:#000 !important; font-weight:700 !important; font-size:7.5pt !important; }
-  /* Grand total */
-  .r-grand                        { background:#000 !important; padding:2.5mm 3.5mm !important; }
-  .r-grand-lbl                    { color:rgba(255,255,255,0.65) !important; font-size:5.5pt !important; }
-  .r-grand-amt                    { color:#fff !important; font-size:14pt !important; }
-  /* Instagram / QR */
-  .r-insta                        { border:none !important; border-top:0.5pt solid #bbb !important; padding:2mm 3.5mm !important; }
-  .r-insta-title                  { color:#000 !important; font-size:7pt !important; }
-  .r-insta-handle                 { color:#222 !important; font-size:7pt !important; }
-  .r-insta-sub                    { color:#555 !important; font-size:5.5pt !important; }
-  /* Footer */
-  .r-foot                         { border:none !important; border-top:0.5pt solid #bbb !important; padding:1.5mm 3.5mm !important; }
-  .r-foot p                       { color:#555 !important; font-size:6pt !important; }
+
+  /* A5 PAGE SETUP */
+  @page {
+    size: A5 portrait;
+    margin: 6mm;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  /* Hide everything except receipt */
+  body > * {
+    display: none !important;
+  }
+
+  .modal-overlay.open {
+    display: block !important;
+    background: none !important;
+    position: static !important;
+  }
+
+  .receipt-modal {
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    max-height: none;
+    max-width: 100%;
+    animation: none;
+  }
+
+  .receipt-action-btns,
+  .modal-handle {
+    display: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .receipt {
+    border: none !important;
+    border-radius: 0 !important;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  /* ===== HEADER ===== */
+  .r-hdr {
+    background: #000 !important;
+    padding: 3mm 3.5mm 2.5mm !important;
+  }
+
+  .r-store-name { color: #fff !important; font-size: 15pt !important; }
+  .r-store-sub { color: rgba(255,255,255,0.75) !important; font-size: 6pt !important; }
+  .r-meta { color: rgba(255,255,255,0.8) !important; font-size: 6pt !important; }
+  .r-cust {
+    color: #fff !important;
+    font-size: 6.5pt !important;
+    border-top-color: rgba(255,255,255,0.35) !important;
+  }
+
+  /* ===== TABLE ===== */
+  .r-tbl-hdr {
+    background: #ddd !important;
+    color: #000 !important;
+    font-size: 6pt !important;
+    padding: 2mm 3.5mm !important;
+  }
+
+  .r-items {
+    border: none !important;
+    page-break-inside: auto;
+  }
+
+  /* EACH ITEM SAFE */
+  .r-item {
+    padding: 2mm 3.5mm !important;
+    border-bottom: 0.4pt solid #bbb !important;
+    page-break-inside: avoid;
+  }
+
+  .r-item:nth-child(even) {
+    background: #f2f2f2 !important;
+  }
+
+  .r-item-name { font-size: 9pt !important; }
+  .r-item-detail { font-size: 6pt !important; }
+  .r-item-amt { font-size: 9pt !important; font-weight: 700 !important; }
+
+  .r-disc-tag {
+    background: #000 !important;
+    color: #fff !important;
+    font-size: 5pt !important;
+  }
+
+  /* ===== TOTALS (IMPORTANT: NO BREAK) ===== */
+  .r-totals {
+    background: #ebebeb !important;
+    border: none !important;
+    padding: 2mm 3.5mm !important;
+    page-break-inside: avoid;
+  }
+
+  .r-row { font-size: 7pt !important; }
+  .r-row.saved { font-weight: 700 !important; }
+
+  /* ===== GRAND TOTAL ===== */
+  .r-grand {
+    background: #000 !important;
+    padding: 3mm 3.5mm !important;
+    page-break-inside: avoid;
+  }
+
+  .r-grand-lbl { font-size: 6pt !important; }
+  .r-grand-amt { font-size: 16pt !important; }
+
+  /* ===== INSTAGRAM ===== */
+  .r-insta {
+    border: none !important;
+    border-top: 0.5pt solid #bbb !important;
+    padding: 2mm 3.5mm !important;
+    page-break-inside: avoid;
+  }
+
+  .r-insta-title { font-size: 7pt !important; }
+  .r-insta-handle { font-size: 7pt !important; }
+  .r-insta-sub { font-size: 6pt !important; }
+
+  /* ===== FOOTER ===== */
+  .r-foot {
+    border: none !important;
+    border-top: 0.5pt solid #bbb !important;
+    padding: 2mm 3.5mm !important;
+    page-break-inside: avoid;
+  }
+
+  .r-foot p { font-size: 6pt !important; }
+
 }
 </style>
 </head>
