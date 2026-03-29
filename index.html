@@ -352,37 +352,76 @@ function showPage(p){
 }
 
 
-  function sendWhatsAppBill(sale){
+function sendWhatsAppBill(sale){
   if(!sale || !sale.custPhone){
     showToast("⚠ Enter customer phone");
+    document.getElementById('custPhone').focus();
     return;
   }
 
-  // Clean number
+  // Format phone
   let phone = sale.custPhone.replace(/\D/g,'');
-
-  // Add India code if needed
   if(phone.length === 10){
     phone = "91" + phone;
   }
 
-  // Build message
+  // Header
   let msg = `✨ *INFINITY STORE* ✨\n`;
-  msg += `\n🧾 Bill: ${sale.id}`;
+  msg += `📍 ${STORE_ADDRESS}\n`;
+  msg += `\n🧾 *Bill: ${sale.id}*`;
   msg += `\n📅 ${new Date(sale.date).toLocaleString('en-IN')}`;
-  msg += `\n-------------------------\n`;
+  msg += `\n━━━━━━━━━━━━━━━━━━\n`;
 
-  sale.items.forEach((item)=>{
-    msg += `• ${item.name} x${item.qty} = ₹${(item.price*item.qty).toFixed(2)}\n`;
+  // Items
+  sale.items.forEach((item, i)=>{
+    const base = item.price * item.qty;
+    const disc = item.discount || 0;
+    const final = base * (1 - disc/100);
+    const saved = base - final;
+
+    msg += `*${i+1}. ${item.name}*\n`;
+    msg += `   ₹${item.price} × ${item.qty} = ₹${base.toFixed(2)}\n`;
+
+    if(disc > 0){
+      msg += `   🔻 ${disc}% off → -₹${saved.toFixed(2)}\n`;
+    }
+
+    msg += `   ➤ ₹${final.toFixed(2)}\n\n`;
   });
 
-  msg += `-------------------------\n`;
-  msg += `💰 *Total: ₹${sale.total.toFixed(2)}*`;
-  msg += `\n\n🙏 Thank you for shopping!`;
+  msg += `━━━━━━━━━━━━━━━━━━\n`;
+
+  // Totals
+  msg += `🧮 *Summary*\n`;
+  msg += `Subtotal: ₹${sale.grossSubtotal.toFixed(2)}\n`;
+
+  if(sale.itemDiscTotal > 0){
+    msg += `Item Discount: -₹${sale.itemDiscTotal.toFixed(2)}\n`;
+    msg += `After Item Discount: ₹${sale.subtotal.toFixed(2)}\n`;
+  }
+
+  if(sale.extraDiscAmt > 0){
+    let label = "Bill Discount";
+    if(sale.extraPct > 0 && sale.extraFlat > 0){
+      label += ` (${sale.extraPct}% + ₹${sale.extraFlat})`;
+    } else if(sale.extraPct > 0){
+      label += ` (${sale.extraPct}%)`;
+    } else if(sale.extraFlat > 0){
+      label += ` (₹${sale.extraFlat} flat)`;
+    }
+
+    msg += `${label}: -₹${sale.extraDiscAmt.toFixed(2)}\n`;
+  }
+
+  msg += `━━━━━━━━━━━━━━━━━━\n`;
+  msg += `💰 *TOTAL PAYABLE: ₹${sale.total.toFixed(2)}*\n`;
+
+  // Footer
+  msg += `\n🙏 Thank you for shopping with us!`;
   msg += `\n📸 instagram.com/${INSTAGRAM_HANDLE}`;
 
+  // Open WhatsApp
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-
   window.open(url, '_blank');
 }
 
