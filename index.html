@@ -7,267 +7,198 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>∞ Infinity Store — Billing</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1a1208;
-  --paper: #f5f0e8;
-  --cream: #ede7d5;
-  --warm: #c8a96e;
-  --accent: #b85c38;
-  --green: #3d7a5a;
-  --light: #faf7f2;
-  --border: #d4c9b0;
-  --shadow: rgba(26,18,8,0.12);
-  --nav-h: 56px;
-  --header-h: 52px;
-  --blue: #4a90d9;
+  --ink:#0d0d0d; --paper:#f4f1ec; --cream:#e8e3d8;
+  --mid:#555; --soft:#888; --border:#c8c2b5;
+  --light:#faf9f6; --white:#fff;
+  --nav-h:56px; --hdr-h:52px;
 }
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html, body { height:100%; overflow:hidden; }
-body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink); }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--ink);}
 
-/* ── HEADER ── */
-.app-header {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  height:var(--header-h);
-  background:var(--ink);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 0.9rem;
-  box-shadow:0 2px 14px rgba(0,0,0,0.35);
-}
-.logo { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--warm); line-height:1; }
-.logo small { color:rgba(255,255,255,0.35); font-size:0.56rem; letter-spacing:0.2em; text-transform:uppercase; display:block; margin-top:2px; font-family:'DM Mono',monospace; }
-.header-right { display:flex; align-items:center; gap:0.6rem; }
-#clock { font-family:'DM Mono',monospace; font-size:0.72rem; color:rgba(255,255,255,0.45); }
+.app-header{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--hdr-h);background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 0.9rem;box-shadow:0 2px 12px rgba(0,0,0,0.4);}
+.logo{font-family:'Libre Baskerville',serif;font-size:1.15rem;color:#e8d9b8;line-height:1.1;}
+.logo small{color:rgba(255,255,255,0.3);font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;display:block;margin-top:2px;font-family:'IBM Plex Mono',monospace;}
+.header-right{display:flex;align-items:center;gap:0.6rem;}
+#clock{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:rgba(255,255,255,0.4);}
+.icon-btn{background:rgba(255,255,255,0.1);border:none;color:white;width:34px;height:34px;border-radius:7px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;position:relative;}
 
-/* ── BOTTOM NAV ── */
-.bottom-nav {
-  position:fixed; bottom:0; left:0; right:0; z-index:200;
-  height:var(--nav-h);
-  background:var(--ink);
-  display:flex;
-  box-shadow:0 -2px 20px rgba(0,0,0,0.3);
-}
-.nav-item {
-  flex:1; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:2px; cursor:pointer;
-  color:rgba(255,255,255,0.38); transition:color 0.2s;
-  border:none; background:none; padding:6px 0; position:relative;
-}
-.nav-item.active { color:var(--warm); }
-.nav-icon { font-size:1.15rem; }
-.nav-label { font-size:0.58rem; font-family:'DM Mono',monospace; letter-spacing:0.07em; text-transform:uppercase; }
-.cart-badge { position:absolute; top:5px; right:calc(50% - 18px); background:var(--accent); color:white; border-radius:10px; font-size:0.56rem; font-family:'DM Mono',monospace; padding:1px 5px; min-width:15px; text-align:center; display:none; }
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;height:var(--nav-h);background:var(--ink);display:flex;box-shadow:0 -2px 16px rgba(0,0,0,0.35);}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:rgba(255,255,255,0.35);border:none;background:none;padding:6px 0;}
+.nav-item.active{color:#e8d9b8;}
+.nav-icon{font-size:1.1rem;}
+.nav-label{font-size:0.55rem;font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;}
 
-/* ── PAGES ── */
-.page { display:none; position:fixed; top:var(--header-h); bottom:var(--nav-h); left:0; right:0; overflow-y:auto; -webkit-overflow-scrolling:touch; }
-.page.active { display:block; }
+.page{display:none;position:fixed;top:var(--hdr-h);bottom:var(--nav-h);left:0;right:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#page-bill{display:none;flex-direction:column;overflow:hidden;background:var(--light);}
+#page-bill.active{display:flex;}
 
-/* ══════════════════════════
-   BILLING PAGE
-══════════════════════════ */
-#page-bill {
-  display:none;
-  flex-direction:column;
-  overflow:hidden;
-  background:var(--light);
-}
-#page-bill.active { display:flex; }
+/* ── FORM ── */
+.bill-form-area{background:var(--white);border-bottom:2px solid var(--border);padding:0.65rem 0.8rem;flex-shrink:0;}
+.form-label{font-size:0.58rem;font-family:'IBM Plex Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);margin-bottom:0.4rem;}
+.bill-main-row{display:flex;gap:0.4rem;margin-bottom:0.4rem;}
+.bill-name-inp{flex:1;padding:0.62rem 0.75rem;border:1.5px solid var(--border);border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:0.93rem;font-weight:500;outline:none;background:var(--light);color:var(--ink);min-width:0;}
+.bill-name-inp:focus{border-color:var(--ink);background:white;}
+.add-item-btn{padding:0 1.1rem;background:var(--ink);color:white;border:none;border-radius:8px;font-size:1.4rem;cursor:pointer;flex-shrink:0;transition:all 0.12s;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.add-item-btn:active{opacity:0.75;transform:scale(0.94);}
+.bill-num-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;}
+.num-field{display:flex;flex-direction:column;gap:2px;}
+.num-label{font-size:0.55rem;font-family:'IBM Plex Mono',monospace;color:var(--soft);letter-spacing:0.1em;text-transform:uppercase;}
+.num-inp{padding:0.48rem 0.5rem;border:1.5px solid var(--border);border-radius:7px;font-family:'IBM Plex Mono',monospace;font-size:0.88rem;font-weight:600;outline:none;background:var(--light);color:var(--ink);text-align:center;-webkit-appearance:none;appearance:none;}
+.num-inp:focus{border-color:var(--ink);background:white;}
 
-/* Quick-add form */
-.bill-form-area {
-  background:white;
-  border-bottom:2px solid var(--border);
-  padding:0.7rem 0.8rem;
-  flex-shrink:0;
-}
-.bill-form-title {
-  font-size:0.62rem; font-family:'DM Mono',monospace; letter-spacing:0.12em;
-  text-transform:uppercase; color:#aaa; margin-bottom:0.5rem;
-}
-.bill-main-row {
-  display:flex; gap:0.4rem; align-items:stretch; margin-bottom:0.4rem;
-}
-.bill-name-inp {
-  flex:1; padding:0.65rem 0.75rem;
-  border:1.5px solid var(--border); border-radius:10px;
-  font-family:'DM Sans',sans-serif; font-size:0.95rem;
-  outline:none; background:var(--light); color:var(--ink);
-  min-width:0;
-}
-.bill-name-inp:focus { border-color:var(--warm); background:white; }
-.add-item-btn {
-  padding:0 1rem; background:var(--ink); color:white;
-  border:none; border-radius:10px; font-size:1.3rem;
-  cursor:pointer; flex-shrink:0; transition:all 0.15s;
-  font-weight:700; display:flex; align-items:center; justify-content:center;
-}
-.add-item-btn:active { background:var(--accent); transform:scale(0.95); }
-.bill-num-row {
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.4rem;
-}
-.num-field { display:flex; flex-direction:column; gap:2px; }
-.num-label { font-size:0.6rem; font-family:'DM Mono',monospace; color:#aaa; letter-spacing:0.08em; text-transform:uppercase; }
-.num-inp {
-  padding:0.5rem 0.55rem; border:1.5px solid var(--border); border-radius:8px;
-  font-family:'DM Mono',monospace; font-size:0.88rem; outline:none;
-  background:var(--light); color:var(--ink); text-align:center;
-  -webkit-appearance:none; appearance:none;
-}
-.num-inp:focus { border-color:var(--warm); background:white; }
+/* ── CART ── */
+.cart-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;}
+.cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0.5rem;color:#ccc;}
+.cart-empty .big-icon{font-size:3.5rem;}
+.cart-empty p{font-size:0.85rem;}
+.cart-empty .sub{font-size:0.72rem;color:#ddd;}
 
-/* Cart items scroll */
-.cart-scroll {
-  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
-  min-height:0;
-}
-.cart-empty {
-  display:flex; flex-direction:column; align-items:center;
-  justify-content:center; height:100%; gap:0.5rem; color:#ccc;
-}
-.cart-empty .big-icon { font-size:3.5rem; }
-.cart-empty p { font-size:0.85rem; }
-.cart-empty p.sub { font-size:0.72rem; color:#ddd; }
+/* ── CART HEADER BAR ── */
+.cart-header-bar{display:flex;align-items:center;justify-content:space-between;padding:0.38rem 0.85rem;background:#f0ece4;border-bottom:1.5px solid #e0dbd0;flex-shrink:0;}
+.cart-count-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--soft);letter-spacing:0.1em;text-transform:uppercase;}
+.clear-all-btn{background:#fff0f0;border:1.5px solid #ffc5c5;color:#c0392b;border-radius:6px;padding:0.22rem 0.6rem;font-size:0.65rem;font-family:'IBM Plex Sans',sans-serif;font-weight:700;cursor:pointer;letter-spacing:0.02em;}
+.clear-all-btn:active{background:#ffc5c5;}
 
-.cart-item {
-  padding:0.65rem 0.85rem; border-bottom:1px solid #f0ece4;
-  display:flex; align-items:center; gap:0.5rem;
-  transition:background 0.1s;
-}
-.cart-item:nth-child(even) { background:#faf8f4; }
-.ci-num { font-family:'DM Mono',monospace; font-size:0.7rem; color:#ccc; min-width:18px; text-align:right; flex-shrink:0; }
-.ci-body { flex:1; min-width:0; }
-.ci-name { font-size:0.85rem; font-weight:600; color:var(--ink); line-height:1.3; }
-.ci-meta { font-size:0.68rem; color:#aaa; font-family:'DM Mono',monospace; margin-top:1px; }
-.ci-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.3rem; flex-shrink:0; }
-.ci-total { font-family:'DM Mono',monospace; font-size:0.92rem; color:var(--accent); font-weight:700; white-space:nowrap; }
-.ci-disc-badge { background:#e8f5ee; color:var(--green); font-size:0.6rem; font-family:'DM Mono',monospace; padding:1px 5px; border-radius:5px; }
-.ci-del { background:none; border:none; color:#ddd; font-size:0.9rem; cursor:pointer; padding:2px 4px; flex-shrink:0; }
-.ci-del:active { color:#c0392b; }
+.cart-item{padding:0.55rem 0.85rem 0.55rem 0.7rem;border-bottom:1.5px solid #eeece8;display:flex;align-items:center;gap:0.45rem;position:relative;}
+.cart-item:nth-child(even){background:#f8f6f2;}
+.ci-num{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:#ccc;min-width:16px;text-align:right;flex-shrink:0;}
+.ci-body{flex:1;min-width:0;}
+.ci-name{font-size:0.85rem;font-weight:700;color:var(--ink);line-height:1.3;}
+.ci-meta{font-size:0.66rem;color:var(--soft);font-family:'IBM Plex Mono',monospace;margin-top:1px;}
+.ci-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
+.ci-total{font-family:'IBM Plex Mono',monospace;font-size:0.9rem;font-weight:700;color:var(--ink);white-space:nowrap;}
+.ci-disc-badge{background:#0d0d0d;color:white;font-size:0.58rem;font-family:'IBM Plex Mono',monospace;padding:1px 5px;border-radius:4px;}
 
-/* Sticky totals + checkout footer */
-.bill-footer {
-  background:white;
-  border-top:2px solid var(--border);
-  padding:0.7rem 0.85rem 0.75rem;
-  flex-shrink:0;
-}
-.footer-top-row {
-  display:flex; gap:0.5rem; margin-bottom:0.55rem;
-}
-.footer-top-row input {
-  flex:1; padding:0.4rem 0.55rem; border:1.5px solid var(--border);
-  border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.8rem;
-  outline:none; background:var(--light); min-width:0;
-}
-.footer-top-row input:focus { border-color:var(--blue); background:white; }
-.footer-disc-row {
-  display:flex; gap:0.4rem; align-items:center; margin-bottom:0.5rem;
-}
-.footer-disc-row input {
-  flex:1; padding:0.4rem 0.5rem; border:1.5px solid var(--border);
-  border-radius:8px; font-family:'DM Mono',monospace; font-size:0.8rem;
-  outline:none; background:var(--light); min-width:0; text-align:center;
-}
-.footer-disc-row input:focus { border-color:var(--warm); background:white; }
-.footer-disc-row .sep { font-size:0.72rem; color:#bbb; white-space:nowrap; }
-.totals-mini { margin-bottom:0.5rem; }
-.t-row { display:flex; justify-content:space-between; font-size:0.8rem; padding:0.12rem 0; color:#888; }
-.t-row.disc { color:var(--green); font-size:0.76rem; }
-.t-row.grand { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--ink); border-top:1.5px solid var(--border); padding-top:0.4rem; margin-top:0.2rem; }
-.t-row.grand span:last-child { color:var(--accent); }
+/* ── DELETE BUTTON — bigger, red ── */
+.ci-del{background:#fff0f0;border:1.5px solid #ffc5c5;color:#c0392b;font-size:0.78rem;cursor:pointer;padding:0 0.42rem;height:28px;border-radius:6px;flex-shrink:0;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all 0.12s;}
+.ci-del:active{background:#c0392b;color:white;border-color:#c0392b;}
 
-.bill-btn {
-  width:100%; padding:0.9rem; background:var(--ink); color:white;
-  border:none; border-radius:11px; font-family:'Playfair Display',serif;
-  font-size:1.05rem; cursor:pointer; transition:all 0.2s;
-  box-shadow:0 3px 14px rgba(26,18,8,0.22);
-}
-.bill-btn:active { background:var(--accent); transform:scale(0.98); }
-.bill-btn:disabled { opacity:0.3; cursor:not-allowed; transform:none; }
+.qty-ctrl{display:flex;align-items:center;gap:0.25rem;}
+.qty-btn{width:25px;height:25px;border-radius:5px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--ink);}
+.qty-btn:active{background:var(--ink);color:white;border-color:var(--ink);}
+.qty-num{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;font-weight:700;min-width:18px;text-align:center;}
 
-/* ══════════════════════════
-   REPORTS PAGE
-══════════════════════════ */
-.rep-page { background:var(--light); padding-bottom:1rem; }
-.stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; padding:0.9rem 0.8rem 0.4rem; }
-.stat-card { background:white; border-radius:12px; padding:0.85rem; border-left:4px solid var(--warm); box-shadow:0 1px 6px var(--shadow); }
-.stat-card.g { border-left-color:var(--green); }
-.stat-card.a { border-left-color:var(--accent); }
-.stat-card.b { border-left-color:var(--blue); }
-.stat-label { font-size:0.6rem; font-family:'DM Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; color:#aaa; }
-.stat-val { font-family:'Playfair Display',serif; font-size:1.35rem; color:var(--ink); margin-top:0.15rem; }
-.history-section { padding:0 0.8rem; }
-.history-title { font-family:'Playfair Display',serif; font-size:0.95rem; color:var(--ink); margin-bottom:0.45rem; opacity:0.7; }
-.sale-card { background:white; border-radius:12px; padding:0.7rem 0.85rem; border:1.5px solid var(--border); margin-bottom:0.45rem; box-shadow:0 1px 6px var(--shadow); }
-.sale-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.2rem; }
-.sale-id { font-family:'DM Mono',monospace; font-size:0.68rem; color:#aaa; }
-.sale-total-amt { font-family:'DM Mono',monospace; font-size:0.9rem; color:var(--green); font-weight:600; }
-.sale-time { font-size:0.68rem; color:#aaa; }
-.sale-items-list { font-size:0.74rem; color:#666; margin:0.15rem 0 0.4rem; line-height:1.4; }
-.sale-reprint-btn { background:var(--cream); border:none; border-radius:6px; padding:0.28rem 0.65rem; font-size:0.7rem; cursor:pointer; }
-.no-sales { text-align:center; padding:2rem; color:#ccc; font-size:0.88rem; }
+/* ── FOOTER ── */
+.bill-footer{background:var(--white);border-top:2px solid var(--border);padding:0.65rem 0.85rem 0.7rem;flex-shrink:0;}
+.footer-cust-row{display:flex;gap:0.4rem;margin-bottom:0.45rem;}
+.footer-cust-row input{flex:1;padding:0.38rem 0.55rem;border:1.5px solid var(--border);border-radius:7px;font-family:'IBM Plex Sans',sans-serif;font-size:0.78rem;outline:none;background:var(--light);min-width:0;}
+.footer-cust-row input:focus{border-color:var(--ink);background:white;}
+.footer-disc-row{display:flex;gap:0.4rem;align-items:center;margin-bottom:0.45rem;}
+.footer-disc-row input{flex:1;padding:0.38rem 0.45rem;border:1.5px solid var(--border);border-radius:7px;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:600;outline:none;background:var(--light);min-width:0;text-align:center;-webkit-appearance:none;}
+.footer-disc-row input:focus{border-color:var(--ink);background:white;}
+.footer-disc-row .sep{font-size:0.7rem;color:#bbb;white-space:nowrap;font-family:'IBM Plex Mono',monospace;}
+.totals-mini{margin-bottom:0.45rem;}
+.t-row{display:flex;justify-content:space-between;font-size:0.78rem;padding:0.1rem 0;color:var(--soft);font-family:'IBM Plex Mono',monospace;}
+.t-row.disc{color:#333;font-weight:700;}
+.t-row.grand{font-family:'Libre Baskerville',serif;font-size:1.2rem;color:var(--ink);font-weight:700;border-top:2px solid var(--ink);padding-top:0.4rem;margin-top:0.25rem;}
+.bill-btn{width:100%;padding:0.88rem;background:var(--ink);color:white;border:none;border-radius:9px;font-family:'Libre Baskerville',serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.15s;letter-spacing:0.02em;}
+.bill-btn:active{opacity:0.8;transform:scale(0.98);}
+.bill-btn:disabled{opacity:0.28;cursor:not-allowed;transform:none;}
 
-/* ══════════════════════════
-   MODALS
-══════════════════════════ */
-.modal-overlay { position:fixed; inset:0; background:rgba(26,18,8,0.55); display:none; align-items:flex-end; justify-content:center; z-index:9999; backdrop-filter:blur(3px); }
-.modal-overlay.open { display:flex !important; }
-.receipt-modal { background:white; border-radius:20px 20px 0 0; padding:1rem 1rem 2rem; width:100%; max-width:520px; max-height:92vh; overflow-y:auto; animation:slideUp 0.25s ease; }
-@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-.modal-handle { width:40px; height:4px; background:#ddd; border-radius:2px; margin:0 auto 0.9rem; }
+/* ── REPORTS ── */
+.rep-page{background:var(--light);padding-bottom:1rem;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;padding:0.9rem 0.8rem 0.5rem;}
+.stat-card{background:var(--white);border-radius:10px;padding:0.8rem;border:1.5px solid var(--border);border-top:3px solid var(--ink);}
+.stat-label{font-size:0.58rem;font-family:'IBM Plex Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--soft);}
+.stat-val{font-family:'Libre Baskerville',serif;font-size:1.3rem;color:var(--ink);margin-top:0.15rem;font-weight:700;}
+.history-section{padding:0 0.8rem;}
+.history-title{font-family:'Libre Baskerville',serif;font-size:0.9rem;color:var(--ink);margin-bottom:0.4rem;}
+.sale-card{background:var(--white);border-radius:10px;padding:0.65rem 0.85rem;border:1.5px solid var(--border);margin-bottom:0.4rem;}
+.sale-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.18rem;}
+.sale-id{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--soft);}
+.sale-total-amt{font-family:'IBM Plex Mono',monospace;font-size:0.88rem;color:var(--ink);font-weight:700;}
+.sale-time{font-size:0.65rem;color:var(--soft);font-family:'IBM Plex Mono',monospace;}
+.sale-items-list{font-size:0.72rem;color:#555;margin:0.15rem 0 0.4rem;line-height:1.45;}
+.sale-reprint-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:6px;padding:0.28rem 0.65rem;font-size:0.68rem;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600;}
+.no-sales{text-align:center;padding:2rem;color:#ccc;font-size:0.88rem;}
 
-/* Receipt */
-.receipt { font-family:'DM Sans',sans-serif; background:white; }
-.r-header { background:var(--ink); color:white; padding:0.9rem 1.1rem; border-radius:10px 10px 0 0; }
-.r-store-name { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--warm); }
-.r-store-sub { font-size:0.6rem; letter-spacing:0.2em; color:rgba(255,255,255,0.38); text-transform:uppercase; font-family:'DM Mono',monospace; margin-bottom:0.45rem; }
-.r-meta-row { display:flex; justify-content:space-between; font-size:0.7rem; color:rgba(255,255,255,0.55); font-family:'DM Mono',monospace; }
-.r-cust-row { display:flex; gap:1rem; font-size:0.74rem; color:rgba(255,255,255,0.8); margin-top:0.4rem; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.1); flex-wrap:wrap; }
-.r-items-hdr { display:grid; grid-template-columns:1fr 36px 70px 70px; gap:0.3rem; padding:0.4rem 0.75rem; background:var(--cream); font-size:0.65rem; font-family:'DM Mono',monospace; letter-spacing:0.08em; text-transform:uppercase; color:#888; }
-.r-items { border:1px solid var(--border); border-top:none; border-bottom:none; }
-.r-item { display:flex; align-items:flex-start; gap:0.5rem; padding:0.5rem 0.75rem; border-bottom:1px solid #f0ece4; }
-.r-item-left { flex:1; min-width:0; }
-.r-item-name { font-size:0.8rem; font-weight:600; color:var(--ink); line-height:1.3; }
-.r-item-detail { font-size:0.64rem; color:#aaa; font-family:'DM Mono',monospace; margin-top:1px; }
-.r-disc-tag { background:#e8f5ee; color:var(--green); font-size:0.58rem; padding:1px 4px; border-radius:4px; margin-left:4px; font-family:'DM Mono',monospace; }
-.r-item-total { font-family:'DM Mono',monospace; font-size:0.82rem; font-weight:700; color:var(--ink); min-width:64px; text-align:right; white-space:nowrap; }
-.r-totals { padding:0.5rem 0.75rem; border:1px solid var(--border); border-top:none; background:var(--light); }
-.r-row { display:flex; justify-content:space-between; font-size:0.76rem; padding:0.15rem 0; color:#666; }
-.r-row.green { color:var(--green); font-weight:500; }
-.r-grand { display:flex; justify-content:space-between; align-items:center; background:var(--ink); color:white; padding:0.85rem 1.1rem; border-radius:0 0 10px 10px; margin-bottom:0.65rem; }
-.r-grand span:first-child { font-family:'DM Mono',monospace; font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; opacity:0.65; }
-.r-grand span:last-child { font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--warm); }
-.r-footer { text-align:center; font-size:0.68rem; color:#bbb; padding:0.2rem 0 0.5rem; }
-.receipt-action-btns { display:flex; gap:0.5rem; margin-top:0.3rem; }
-.receipt-action-btns button { flex:1; padding:0.72rem; border:none; border-radius:10px; font-size:0.82rem; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; }
-.btn-pdf { background:var(--ink); color:white; }
-.btn-print { background:var(--cream); color:var(--ink); }
-.btn-close { background:#f0ece4; color:var(--ink); }
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center;z-index:9999;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex !important;}
+.receipt-modal{background:white;border-radius:18px 18px 0 0;padding:0.9rem 0.9rem 1.8rem;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;animation:slideUp 0.22s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:38px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 0.8rem;}
 
-/* Toast */
-#appToast { position:fixed; bottom:calc(var(--nav-h) + 14px); left:50%; transform:translateX(-50%); background:var(--ink); color:white; padding:0.55rem 1.1rem; border-radius:20px; font-size:0.8rem; font-family:'DM Sans',sans-serif; font-weight:600; z-index:9999; pointer-events:none; transition:opacity 0.3s; box-shadow:0 4px 16px rgba(0,0,0,0.3); white-space:nowrap; opacity:0; }
+/* ── ON-SCREEN RECEIPT ── */
+.receipt{font-family:'IBM Plex Sans',sans-serif;background:white;border:1.5px solid #ccc;border-radius:8px;overflow:hidden;}
+.r-hdr{background:#0d0d0d;color:white;padding:0.85rem 1rem;}
+.r-store-name{font-family:'Libre Baskerville',serif;font-size:1.35rem;color:#e8d9b8;}
+.r-store-sub{font-size:0.55rem;letter-spacing:0.25em;color:rgba(255,255,255,0.38);text-transform:uppercase;font-family:'IBM Plex Mono',monospace;margin-bottom:0.45rem;}
+.r-meta{display:flex;justify-content:space-between;font-size:0.68rem;color:rgba(255,255,255,0.55);font-family:'IBM Plex Mono',monospace;}
+.r-cust{display:flex;gap:0.8rem;font-size:0.72rem;color:rgba(255,255,255,0.9);margin-top:0.4rem;padding-top:0.4rem;border-top:1px solid rgba(255,255,255,0.15);flex-wrap:wrap;font-weight:600;}
+.r-tbl-hdr{display:grid;grid-template-columns:1fr 32px 64px 64px;gap:0.2rem;padding:0.38rem 0.85rem;background:#e0dbd0;font-size:0.6rem;font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;color:#333;font-weight:700;}
+.r-items{border-left:1.5px solid #ccc;border-right:1.5px solid #ccc;}
+.r-item{display:flex;align-items:flex-start;gap:0.4rem;padding:0.48rem 0.85rem;border-bottom:1px solid #eee;}
+.r-item:nth-child(even){background:#f8f6f2;}
+.r-item-l{flex:1;min-width:0;}
+.r-item-name{font-size:0.79rem;font-weight:700;color:#0d0d0d;line-height:1.3;}
+.r-item-detail{font-size:0.62rem;color:#666;font-family:'IBM Plex Mono',monospace;margin-top:1px;}
+.r-disc-tag{background:#0d0d0d;color:white;font-size:0.55rem;padding:1px 4px;border-radius:3px;margin-left:4px;font-family:'IBM Plex Mono',monospace;font-weight:700;}
+.r-item-amt{font-family:'IBM Plex Mono',monospace;font-size:0.8rem;font-weight:700;color:#0d0d0d;min-width:60px;text-align:right;white-space:nowrap;}
+.r-totals{padding:0.48rem 0.85rem;border:1.5px solid #ccc;border-top:none;background:#f5f3ef;}
+.r-row{display:flex;justify-content:space-between;font-size:0.74rem;padding:0.13rem 0;color:#555;font-family:'IBM Plex Mono',monospace;}
+.r-row.saved{color:#0d0d0d;font-weight:700;}
+.r-grand{display:flex;justify-content:space-between;align-items:center;background:#0d0d0d;padding:0.8rem 1rem;}
+.r-grand-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+.r-grand-amt{font-family:'Libre Baskerville',serif;font-size:1.5rem;color:#e8d9b8;font-weight:700;}
+.r-insta{border:1.5px solid #ccc;border-top:none;padding:0.6rem 0.85rem;background:white;display:flex;align-items:center;gap:0.75rem;}
+.r-qr{flex-shrink:0;}
+.r-insta-txt .r-insta-title{font-size:0.72rem;font-weight:700;color:#0d0d0d;}
+.r-insta-txt .r-insta-handle{font-size:0.7rem;color:#333;font-family:'IBM Plex Mono',monospace;margin-top:1px;font-weight:700;}
+.r-insta-txt .r-insta-sub{font-size:0.62rem;color:#777;margin-top:2px;line-height:1.4;}
+.r-foot{text-align:center;padding:0.45rem 0.85rem 0.3rem;border:1.5px solid #ccc;border-top:none;border-radius:0 0 6px 6px;}
+.r-foot p{font-size:0.64rem;color:#aaa;font-family:'IBM Plex Mono',monospace;}
 
-/* ══════════════════════════
-   PRINT STYLES — crisp & dark
-══════════════════════════ */
+.receipt-action-btns{display:flex;gap:0.4rem;margin-top:0.65rem;}
+.receipt-action-btns button{flex:1;padding:0.68rem;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:700;}
+.btn-pdf{background:#0d0d0d;color:white;}
+.btn-print{background:#e8e3d8;color:#0d0d0d;border:1.5px solid #c8c2b5;}
+.btn-close{background:#f0ece4;color:#0d0d0d;border:1.5px solid #c8c2b5;}
+
+#appToast{position:fixed;bottom:calc(var(--nav-h)+14px);left:50%;transform:translateX(-50%);background:#0d0d0d;color:white;padding:0.52rem 1.1rem;border-radius:20px;font-size:0.78rem;font-family:'IBM Plex Sans',sans-serif;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.3s;box-shadow:0 4px 16px rgba(0,0,0,0.3);white-space:nowrap;opacity:0;}
+
+/* ═══════════════════════════════════════════════
+   PRINT  —  Professional B&W, narrow margins
+   Optimised for 80mm thermal or A5 laser print
+═══════════════════════════════════════════════ */
 @media print {
-  @page { size:A5 portrait; margin:8mm; }
-  body > * { display:none !important; }
-  .modal-overlay.open { display:block !important; background:none !important; position:static !important; }
-  .receipt-modal { border-radius:0; padding:0; box-shadow:none; max-height:none; max-width:100%; }
-  .receipt-action-btns, .modal-handle { display:none !important; }
-  /* Force black ink */
-  .r-header { background:#000 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .r-grand { background:#000 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .r-store-name { color:#c8a96e !important; }
-  .r-grand span:last-child { color:#c8a96e !important; }
-  .r-item-name, .r-item-total { color:#000 !important; font-weight:700 !important; }
-  .r-row { color:#333 !important; }
-  .r-item-detail { color:#555 !important; }
-  .r-totals { background:#f5f5f5 !important; }
-  .r-items-hdr { background:#e0e0e0 !important; color:#333 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  @page { size:80mm auto; margin:3mm 2mm; }
+  body>*                          { display:none !important; }
+  .modal-overlay.open             { display:block !important; background:none !important; position:static !important; }
+  .receipt-modal                  { border-radius:0; padding:0; box-shadow:none; max-height:none; max-width:100%; animation:none; }
+  .receipt-action-btns,.modal-handle { display:none !important; }
+  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  .receipt                        { border:none !important; border-radius:0 !important; }
+  .r-hdr                          { background:#000 !important; padding:3mm 3.5mm 2.5mm !important; }
+  .r-store-name                   { color:#fff !important; font-size:15pt !important; }
+  .r-store-sub                    { color:rgba(255,255,255,0.75) !important; font-size:5.5pt !important; }
+  .r-meta                         { color:rgba(255,255,255,0.8) !important; font-size:6pt !important; }
+  .r-cust                         { color:#fff !important; font-size:6.5pt !important; border-top-color:rgba(255,255,255,0.35) !important; }
+  .r-tbl-hdr                      { background:#ddd !important; color:#000 !important; font-size:5.5pt !important; padding:1.5mm 3.5mm !important; }
+  .r-items                        { border:none !important; }
+  .r-item                         { padding:1.8mm 3.5mm !important; border-bottom:0.4pt solid #bbb !important; }
+  .r-item:nth-child(even)         { background:#f2f2f2 !important; }
+  .r-item-name                    { color:#000 !important; font-size:8pt !important; font-weight:700 !important; }
+  .r-item-detail                  { color:#444 !important; font-size:5.5pt !important; }
+  .r-disc-tag                     { background:#000 !important; color:#fff !important; font-size:5pt !important; }
+  .r-item-amt                     { color:#000 !important; font-size:8pt !important; font-weight:700 !important; }
+  .r-totals                       { background:#ebebeb !important; border:none !important; padding:2mm 3.5mm !important; }
+  .r-row                          { color:#333 !important; font-size:7pt !important; }
+  .r-row.saved                    { color:#000 !important; font-weight:700 !important; font-size:7.5pt !important; }
+  .r-grand                        { background:#000 !important; padding:2.5mm 3.5mm !important; }
+  .r-grand-lbl                    { color:rgba(255,255,255,0.65) !important; font-size:5.5pt !important; }
+  .r-grand-amt                    { color:#fff !important; font-size:14pt !important; }
+  .r-insta                        { border:none !important; border-top:0.5pt solid #bbb !important; padding:2mm 3.5mm !important; }
+  .r-insta-title                  { color:#000 !important; font-size:7pt !important; }
+  .r-insta-handle                 { color:#222 !important; font-size:7pt !important; }
+  .r-insta-sub                    { color:#555 !important; font-size:5.5pt !important; }
+  .r-foot                         { border:none !important; border-top:0.5pt solid #bbb !important; padding:1.5mm 3.5mm !important; }
+  .r-foot p                       { color:#555 !important; font-size:6pt !important; }
 }
 </style>
 </head>
@@ -277,121 +208,91 @@ body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--in
 <header class="app-header">
   <div class="logo">∞ Infinity <small>Stationery Store</small></div>
   <div class="header-right">
-    <button id="driveBtn" onclick="toggleDrivePanel()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;position:relative;" title="Google Drive Sync">
+    <button class="icon-btn" id="driveBtn" onclick="toggleDrivePanel()" title="Google Drive Sync">
       <span id="driveBtnIcon">☁</span>
-      <span id="driveDot" style="display:none;position:absolute;top:4px;right:4px;width:7px;height:7px;background:#4ade80;border-radius:50%;border:1.5px solid var(--ink);"></span>
+      <span id="driveDot" style="display:none;position:absolute;top:4px;right:4px;width:7px;height:7px;background:#6ee7b7;border-radius:50%;border:1.5px solid #0d0d0d;"></span>
     </button>
     <span id="clock"></span>
   </div>
 </header>
 
-<!-- GOOGLE DRIVE PANEL -->
-<div id="drivePanel" style="display:none;position:fixed;top:var(--header-h);left:0;right:0;z-index:300;background:white;border-bottom:2px solid var(--border);padding:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.15);max-height:80vh;overflow-y:auto;">
-  <div style="font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.7rem;display:flex;align-items:center;justify-content:space-between;">
+<!-- DRIVE PANEL -->
+<div id="drivePanel" style="display:none;position:fixed;top:var(--hdr-h);left:0;right:0;z-index:300;background:white;border-bottom:2px solid var(--border);padding:1rem;box-shadow:0 4px 20px rgba(0,0,0,0.15);max-height:80vh;overflow-y:auto;">
+  <div style="font-family:'Libre Baskerville',serif;font-size:1.05rem;margin-bottom:0.7rem;display:flex;align-items:center;justify-content:space-between;">
     <span>☁ Google Drive Sync</span>
-    <button onclick="toggleDrivePanel()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#aaa;">✕</button>
+    <button onclick="toggleDrivePanel()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#aaa;">✕</button>
   </div>
-
-  <!-- needs client ID -->
   <div id="driveNeedsSetup" style="display:none;">
-    <div style="background:#fff8f0;border:1.5px solid var(--accent);border-radius:10px;padding:0.7rem 0.8rem;margin-bottom:0.8rem;">
-      <div style="font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:0.3rem;">⚙ One-time setup required</div>
-      <div style="font-size:0.75rem;color:#666;line-height:1.5;">Enter your Google OAuth Client ID to enable Drive sync. <span style="color:var(--accent);cursor:pointer;text-decoration:underline;" onclick="showDriveHelp()">How to get it →</span></div>
+    <div style="background:#fdf5ee;border:1.5px solid #c8a96e;border-radius:8px;padding:0.65rem 0.8rem;margin-bottom:0.7rem;">
+      <div style="font-size:0.74rem;font-weight:700;color:#8b5e2a;margin-bottom:0.25rem;">⚙ One-time setup</div>
+      <div style="font-size:0.73rem;color:#666;line-height:1.5;">Paste your Google OAuth Client ID. <span style="color:#8b5e2a;cursor:pointer;text-decoration:underline;" onclick="showDriveHelp()">How to get it →</span></div>
     </div>
     <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;">
-      <input id="driveClientIdInput" type="text" placeholder="Paste Client ID (.apps.googleusercontent.com)" style="flex:1;padding:0.5rem 0.6rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.72rem;outline:none;font-family:'DM Mono',monospace;min-width:0;">
-      <button onclick="saveDriveClientId()" style="padding:0.5rem 0.8rem;background:var(--ink);color:white;border:none;border-radius:8px;font-size:0.8rem;cursor:pointer;white-space:nowrap;">Save</button>
+      <input id="driveClientIdInput" type="text" placeholder="Paste Client ID (.apps.googleusercontent.com)" style="flex:1;padding:0.5rem 0.6rem;border:1.5px solid var(--border);border-radius:7px;font-size:0.72rem;outline:none;font-family:'IBM Plex Mono',monospace;min-width:0;">
+      <button onclick="saveDriveClientId()" style="padding:0.5rem 0.8rem;background:var(--ink);color:white;border:none;border-radius:7px;font-size:0.8rem;cursor:pointer;white-space:nowrap;font-weight:700;">Save</button>
     </div>
-    <div id="driveHelpSteps" style="display:none;background:var(--light);border-radius:10px;padding:0.7rem 0.8rem;font-size:0.75rem;color:#555;line-height:1.7;">
-      <b>Steps to get Client ID:</b><br>
-      1. Go to <b>console.cloud.google.com</b><br>
-      2. Create a project (e.g. "Infinity POS")<br>
-      3. Enable <b>Google Drive API</b><br>
-      4. Credentials → Create → <b>OAuth 2.0 Client ID</b><br>
-      5. Type: <b>Web application</b><br>
-      6. Authorized JS origins: your GitHub Pages URL<br>
-      &nbsp;&nbsp;<code style="background:#eee;padding:1px 4px;border-radius:3px;font-size:0.68rem;">https://YOURUSERNAME.github.io</code><br>
-      7. Copy Client ID and paste above
+    <div id="driveHelpSteps" style="display:none;background:var(--light);border-radius:8px;padding:0.65rem 0.8rem;font-size:0.73rem;color:#555;line-height:1.75;">
+      <b>Steps:</b><br>1. Go to <b>console.cloud.google.com</b><br>2. Enable <b>Google Drive API</b><br>3. Credentials → Create → <b>OAuth 2.0 Client ID</b><br>4. Type: <b>Web application</b><br>5. Copy Client ID and paste above
     </div>
   </div>
-
-  <!-- signed out -->
   <div id="driveSignedOut">
-    <p style="font-size:0.82rem;color:#666;margin-bottom:0.8rem;">Sign in to save your sales data to Google Drive — accessible from any device.</p>
-    <button onclick="driveSignIn()" style="width:100%;padding:0.8rem;background:#4285F4;color:white;border:none;border-radius:10px;font-size:0.9rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    <p style="font-size:0.8rem;color:#666;margin-bottom:0.75rem;line-height:1.5;">Sign in to backup your sales to Google Drive.</p>
+    <button onclick="driveSignIn()" style="width:100%;padding:0.78rem;background:#4285F4;color:white;border:none;border-radius:9px;font-size:0.88rem;font-family:'IBM Plex Sans',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Sign in with Google
     </button>
-    <button onclick="showDriveClientIdSetup()" style="width:100%;margin-top:0.5rem;padding:0.4rem;background:none;border:none;font-size:0.72rem;color:#bbb;cursor:pointer;">Change Client ID</button>
+    <button onclick="showDriveClientIdSetup()" style="width:100%;margin-top:0.4rem;padding:0.35rem;background:none;border:none;font-size:0.7rem;color:#bbb;cursor:pointer;">Change Client ID</button>
   </div>
-
-  <!-- signed in -->
   <div id="driveSignedIn" style="display:none;">
-    <div id="driveUserInfo" style="font-size:0.82rem;color:#555;margin-bottom:0.8rem;padding:0.5rem 0.7rem;background:#f0fff4;border-radius:8px;border:1px solid #a8e6c0;"></div>
-    <!-- Auto-sync toggle -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0.7rem;background:var(--light);border-radius:8px;border:1.5px solid var(--border);margin-bottom:0.5rem;">
-      <div>
-        <div style="font-size:0.8rem;font-weight:600;color:var(--ink);">Auto-sync</div>
-        <div style="font-size:0.68rem;color:#aaa;">Saves automatically after every sale</div>
-      </div>
-      <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer;">
+    <div id="driveUserInfo" style="font-size:0.8rem;color:#555;margin-bottom:0.75rem;padding:0.48rem 0.65rem;background:#f0fff8;border-radius:7px;border:1px solid #9ee5c0;font-weight:600;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.45rem 0.65rem;background:var(--light);border-radius:7px;border:1.5px solid var(--border);margin-bottom:0.5rem;">
+      <div><div style="font-size:0.78rem;font-weight:700;">Auto-sync</div><div style="font-size:0.65rem;color:#aaa;">Saves after every sale</div></div>
+      <label style="position:relative;display:inline-block;width:42px;height:23px;cursor:pointer;">
         <input type="checkbox" id="autoSyncToggle" onchange="toggleAutoSync(this.checked)" style="opacity:0;width:0;height:0;position:absolute;">
-        <span id="autoSyncSlider" style="position:absolute;inset:0;background:#ccc;border-radius:24px;transition:0.2s;"></span>
-        <span id="autoSyncThumb" style="position:absolute;left:3px;top:3px;width:18px;height:18px;background:white;border-radius:50%;transition:0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></span>
+        <span id="autoSyncSlider" style="position:absolute;inset:0;background:#ccc;border-radius:23px;transition:0.2s;"></span>
+        <span id="autoSyncThumb" style="position:absolute;left:3px;top:2.5px;width:18px;height:18px;background:white;border-radius:50%;transition:0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></span>
       </label>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem;">
-      <button onclick="driveBackup()" id="backupBtn" style="padding:0.7rem;background:var(--green);color:white;border:none;border-radius:10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">↑ Backup Now</button>
-      <button onclick="driveRestore()" id="restoreBtn" style="padding:0.7rem;background:var(--ink);color:white;border:none;border-radius:10px;font-size:0.82rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">↓ Restore</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;margin-bottom:0.45rem;">
+      <button onclick="driveBackup()" id="backupBtn" style="padding:0.65rem;background:var(--ink);color:white;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">↑ Backup</button>
+      <button onclick="driveRestore()" id="restoreBtn" style="padding:0.65rem;background:#555;color:white;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">↓ Restore</button>
     </div>
-    <div id="driveSyncStatus" style="font-size:0.75rem;color:#aaa;text-align:center;min-height:1.2rem;"></div>
-    <button onclick="driveSignOut()" style="width:100%;margin-top:0.5rem;padding:0.5rem;background:none;border:1.5px solid #ddd;border-radius:8px;font-size:0.78rem;color:#aaa;cursor:pointer;">Sign Out</button>
+    <div id="driveSyncStatus" style="font-size:0.72rem;color:#aaa;text-align:center;min-height:1.1rem;font-family:'IBM Plex Mono',monospace;"></div>
+    <button onclick="driveSignOut()" style="width:100%;margin-top:0.45rem;padding:0.45rem;background:none;border:1.5px solid #ddd;border-radius:7px;font-size:0.75rem;color:#aaa;cursor:pointer;">Sign Out</button>
   </div>
 </div>
 
-<!-- ═══ BILLING PAGE ═══ -->
+<!-- BILLING PAGE -->
 <div id="page-bill" class="page active">
-
-  <!-- Quick Add Form -->
   <div class="bill-form-area">
-    <div class="bill-form-title">+ Add item to bill</div>
+    <div class="form-label">+ Add item to bill</div>
     <div class="bill-main-row">
-      <input class="bill-name-inp" type="text" id="itemName" placeholder="Item name (e.g. Classmate Notebook 172pg)" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')addItem()">
-      <button class="add-item-btn" onclick="addItem()" title="Add item">+</button>
+      <input class="bill-name-inp" type="text" id="itemName" placeholder="Item name (e.g. Classmate Notebook)" autocomplete="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')addItem()">
+      <button class="add-item-btn" onclick="addItem()">+</button>
     </div>
     <div class="bill-num-row">
-      <div class="num-field">
-        <span class="num-label">Price ₹</span>
-        <input class="num-inp" type="number" id="itemPrice" placeholder="0.00" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.key==='Enter')addItem()">
-      </div>
-      <div class="num-field">
-        <span class="num-label">Qty</span>
-        <input class="num-inp" type="number" id="itemQty" placeholder="1" min="1" value="1" inputmode="numeric" onkeydown="if(event.key==='Enter')addItem()">
-      </div>
-      <div class="num-field">
-        <span class="num-label">Disc %</span>
-        <input class="num-inp" type="number" id="itemDisc" placeholder="0" min="0" max="100" inputmode="decimal" onkeydown="if(event.key==='Enter')addItem()">
-      </div>
+      <div class="num-field"><span class="num-label">Price ₹</span><input class="num-inp" type="number" id="itemPrice" placeholder="0.00" min="0" step="0.01" inputmode="decimal" onkeydown="if(event.key==='Enter')addItem()"></div>
+      <div class="num-field"><span class="num-label">Qty</span><input class="num-inp" type="number" id="itemQty" placeholder="1" min="1" value="1" inputmode="numeric" onkeydown="if(event.key==='Enter')addItem()"></div>
+      <div class="num-field"><span class="num-label">Disc %</span><input class="num-inp" type="number" id="itemDisc" placeholder="0" min="0" max="100" inputmode="decimal" onkeydown="if(event.key==='Enter')addItem()"></div>
     </div>
   </div>
 
-  <!-- Cart items -->
+  <!-- Cart header bar (shown only when items exist) -->
+  <div class="cart-header-bar" id="cartHeaderBar" style="display:none;">
+    <span class="cart-count-label" id="cartCountLabel">0 items</span>
+    <button class="clear-all-btn" onclick="clearAll()">🗑 Clear All</button>
+  </div>
+
   <div class="cart-scroll" id="cartScroll">
-    <div class="cart-empty" id="cartEmpty">
-      <div class="big-icon">🧾</div>
-      <p>Bill is empty</p>
-      <p class="sub">Type an item above and tap +</p>
-    </div>
+    <div class="cart-empty"><div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p></div>
   </div>
-
-  <!-- Footer: customer + discount + total + checkout -->
   <div class="bill-footer">
-    <div class="footer-top-row">
+    <div class="footer-cust-row">
       <input type="text" id="custName" placeholder="👤 Customer name (optional)" autocomplete="off">
       <input type="tel" id="custPhone" placeholder="📞 Phone" inputmode="numeric" maxlength="10" style="max-width:130px;">
     </div>
     <div class="footer-disc-row">
-      <input type="number" id="billDiscPct" placeholder="Bill discount %" min="0" max="100" oninput="renderTotals()" inputmode="decimal">
+      <input type="number" id="billDiscPct" placeholder="Bill disc %" min="0" max="100" oninput="renderTotals()" inputmode="decimal">
       <span class="sep">% or</span>
       <input type="number" id="billDiscFlat" placeholder="₹ flat off" min="0" oninput="renderTotals()" inputmode="decimal">
     </div>
@@ -400,12 +301,12 @@ body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--in
   </div>
 </div>
 
-<!-- ═══ REPORTS PAGE ═══ -->
+<!-- REPORTS PAGE -->
 <div id="page-rep" class="page rep-page" style="display:none;">
   <div class="stats-grid">
-    <div class="stat-card g"><div class="stat-label">Today Revenue</div><div class="stat-val" id="rToday">₹0</div></div>
-    <div class="stat-card a"><div class="stat-label">Transactions</div><div class="stat-val" id="rTxns">0</div></div>
-    <div class="stat-card b"><div class="stat-label">Items Sold</div><div class="stat-val" id="rItems">0</div></div>
+    <div class="stat-card"><div class="stat-label">Today Revenue</div><div class="stat-val" id="rToday">₹0</div></div>
+    <div class="stat-card"><div class="stat-label">Transactions</div><div class="stat-val" id="rTxns">0</div></div>
+    <div class="stat-card"><div class="stat-label">Items Sold</div><div class="stat-val" id="rItems">0</div></div>
     <div class="stat-card"><div class="stat-label">Avg Sale</div><div class="stat-val" id="rAvg">₹0</div></div>
   </div>
   <div class="history-section">
@@ -416,14 +317,8 @@ body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--in
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-bill" onclick="showPage('bill')">
-    <span class="nav-icon">🧾</span>
-    <span class="nav-label">Bill</span>
-  </button>
-  <button class="nav-item" id="nav-rep" onclick="showPage('rep')">
-    <span class="nav-icon">📊</span>
-    <span class="nav-label">Reports</span>
-  </button>
+  <button class="nav-item active" id="nav-bill" onclick="showPage('bill')"><span class="nav-icon">🧾</span><span class="nav-label">Bill</span></button>
+  <button class="nav-item" id="nav-rep" onclick="showPage('rep')"><span class="nav-icon">📊</span><span class="nav-label">Reports</span></button>
 </nav>
 
 <!-- RECEIPT MODAL -->
@@ -432,705 +327,492 @@ body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--in
     <div class="modal-handle"></div>
     <div id="receiptContent"></div>
     <div class="receipt-action-btns">
-      <button class="btn-pdf" onclick="downloadPDF(currentSale)">⬇ PDF</button>
+      <button class="btn-pdf"   onclick="downloadPDF(currentSale)">⬇ PDF</button>
       <button class="btn-print" onclick="window.print()">🖨 Print</button>
       <button class="btn-close" onclick="closeReceipt()">+ New Bill</button>
     </div>
   </div>
 </div>
 
+<div id="qrHidden" style="display:none;"></div>
 <div id="appToast"></div>
 
 <script>
+// ── CONFIG ──
+const INSTAGRAM_HANDLE = 'infinitystore.haridwar';
+const INSTAGRAM_URL    = 'https://www.instagram.com/' + INSTAGRAM_HANDLE;
+const STORE_ADDRESS    = 'Haridwar, Uttarakhand';
+
 // ── STATE ──
-let cart = [];
-let sales = JSON.parse(localStorage.getItem('infinity_sales') || '[]');
-let currentSale = null;
-let activePage = 'bill';
+let cart=[], sales=JSON.parse(localStorage.getItem('infinity_sales')||'[]'), currentSale=null, activePage='bill';
 
 // ── CLOCK ──
-function updateClock() {
-  document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
-}
-updateClock(); setInterval(updateClock, 1000);
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+tick(); setInterval(tick,1000);
 
 // ── NAV ──
-function showPage(page) {
-  activePage = page;
-  ['bill','rep'].forEach(p => {
-    const el = document.getElementById('page-' + p);
-    if (p === 'bill') { el.style.display = page === 'bill' ? 'flex' : 'none'; }
-    else { el.style.display = page === p ? 'block' : 'none'; }
-    document.getElementById('nav-' + p).classList.toggle('active', p === page);
+function showPage(p){
+  activePage=p;
+  ['bill','rep'].forEach(id=>{
+    const el=document.getElementById('page-'+id);
+    el.style.display=(id==='bill')?(p==='bill'?'flex':'none'):(p===id?'block':'none');
+    document.getElementById('nav-'+id).classList.toggle('active',id===p);
   });
-  if (page === 'rep') renderReports();
+  if(p==='rep')renderReports();
 }
 
 // ── ADD ITEM ──
-function addItem() {
-  const name = document.getElementById('itemName').value.trim();
-  const price = parseFloat(document.getElementById('itemPrice').value) || 0;
-  const qty = parseInt(document.getElementById('itemQty').value) || 1;
-  const disc = Math.min(100, Math.max(0, parseFloat(document.getElementById('itemDisc').value) || 0));
-
-  if (!name) { showToast('⚠ Enter item name'); document.getElementById('itemName').focus(); return; }
-  if (price <= 0) { showToast('⚠ Enter item price'); document.getElementById('itemPrice').focus(); return; }
-
-  // Check if same name+price already in cart — if so, just add qty
-  const existing = cart.find(i => i.name.toLowerCase() === name.toLowerCase() && i.price === price && i.discount === disc);
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cart.push({ id: Date.now(), name, price, qty, discount: disc });
-  }
-
-  // Clear inputs
-  document.getElementById('itemName').value = '';
-  document.getElementById('itemPrice').value = '';
-  document.getElementById('itemQty').value = '1';
-  document.getElementById('itemDisc').value = '';
+function addItem(){
+  const name=document.getElementById('itemName').value.trim();
+  const price=parseFloat(document.getElementById('itemPrice').value)||0;
+  const qty=parseInt(document.getElementById('itemQty').value)||1;
+  const disc=Math.min(100,Math.max(0,parseFloat(document.getElementById('itemDisc').value)||0));
+  if(!name){showToast('⚠ Enter item name');document.getElementById('itemName').focus();return;}
+  if(price<=0){showToast('⚠ Enter item price');document.getElementById('itemPrice').focus();return;}
+  const ex=cart.find(i=>i.name.toLowerCase()===name.toLowerCase()&&i.price===price&&i.discount===disc);
+  if(ex){ex.qty+=qty;}else{cart.push({id:Date.now(),name,price,qty,discount:disc});}
+  document.getElementById('itemName').value='';
+  document.getElementById('itemPrice').value='';
+  document.getElementById('itemQty').value='1';
+  document.getElementById('itemDisc').value='';
   document.getElementById('itemName').focus();
-
-  renderCart();
-  renderTotals();
-  showToast('✓ Added: ' + name);
+  renderCart();renderTotals();showToast('✓ '+name);
 }
 
-// ── REMOVE ──
-function removeItem(id) {
-  cart = cart.filter(i => i.id !== id);
-  renderCart();
-  renderTotals();
+function removeItem(id){
+  cart=cart.filter(i=>i.id!==id);
+  renderCart();renderTotals();
+  showToast('🗑 Item removed');
 }
 
-// ── CHANGE QTY ──
-function changeQty(id, delta) {
-  const item = cart.find(i => i.id === id);
-  if (!item) return;
-  item.qty = Math.max(1, item.qty + delta);
-  renderCart();
-  renderTotals();
+function clearAll(){
+  if(cart.length===0)return;
+  if(!confirm('Remove all '+cart.length+' item(s) from the bill?'))return;
+  cart=[];
+  renderCart();renderTotals();
+  showToast('🗑 Bill cleared');
 }
+
+function changeQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty=Math.max(1,i.qty+d);renderCart();renderTotals();}
 
 // ── RENDER CART ──
-function renderCart() {
-  const scroll = document.getElementById('cartScroll');
-  const empty = document.getElementById('cartEmpty');
-  document.getElementById('billBtn').disabled = cart.length === 0;
+function renderCart(){
+  const s=document.getElementById('cartScroll');
+  const bar=document.getElementById('cartHeaderBar');
+  const lbl=document.getElementById('cartCountLabel');
+  document.getElementById('billBtn').disabled=cart.length===0;
 
-  if (cart.length === 0) {
-    scroll.innerHTML = '';
-    const e = document.createElement('div');
-    e.className = 'cart-empty'; e.id = 'cartEmpty';
-    e.innerHTML = '<div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p>';
-    scroll.appendChild(e);
+  if(!cart.length){
+    bar.style.display='none';
+    s.innerHTML='<div class="cart-empty"><div class="big-icon">🧾</div><p>Bill is empty</p><p class="sub">Type an item above and tap +</p></div>';
     return;
   }
 
-  scroll.innerHTML = cart.map((item, idx) => {
-    const lt = item.price * item.qty * (1 - (item.discount || 0) / 100);
-    const discLabel = item.discount > 0 ? `<span class="ci-disc-badge">${item.discount}% off</span>` : '';
+  bar.style.display='flex';
+  const total=cart.reduce((s,i)=>s+i.qty,0);
+  lbl.textContent=cart.length+' item'+(cart.length>1?'s':'')+' · '+total+' unit'+(total>1?'s':'');
+
+  s.innerHTML=cart.map((item,idx)=>{
+    const lt=item.price*item.qty*(1-(item.discount||0)/100);
+    const db=item.discount>0?`<span class="ci-disc-badge">${item.discount}%off</span>`:'';
     return `<div class="cart-item">
-      <span class="ci-num">${idx + 1}</span>
+      <span class="ci-num">${idx+1}</span>
       <div class="ci-body">
-        <div class="ci-name">${item.name}${discLabel}</div>
-        <div class="ci-meta">₹${item.price.toFixed(2)} × ${item.qty}${item.discount > 0 ? ' · saved ₹' + (item.price * item.qty * item.discount / 100).toFixed(2) : ''}</div>
+        <div class="ci-name">${item.name} ${db}</div>
+        <div class="ci-meta">₹${item.price.toFixed(2)} × ${item.qty}${item.discount>0?' · saved ₹'+(item.price*item.qty*item.discount/100).toFixed(2):''}</div>
       </div>
       <div class="ci-right">
         <span class="ci-total">₹${lt.toFixed(2)}</span>
-        <div style="display:flex;gap:0.3rem;align-items:center;">
-          <button onclick="changeQty(${item.id},-1)" style="width:26px;height:26px;border-radius:6px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;">−</button>
-          <span style="font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:700;min-width:18px;text-align:center;">${item.qty}</span>
-          <button onclick="changeQty(${item.id},1)" style="width:26px;height:26px;border-radius:6px;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;">+</button>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
         </div>
       </div>
-      <button class="ci-del" onclick="removeItem(${item.id})">✕</button>
+      <button class="ci-del" onclick="removeItem(${item.id})" title="Remove item">✕</button>
     </div>`;
   }).join('');
 }
 
-// ── RENDER TOTALS ──
-function renderTotals() {
-  const gross = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const itemDisc = cart.reduce((s, i) => s + i.price * i.qty * (i.discount || 0) / 100, 0);
-  const sub = gross - itemDisc;
-  const ePct = parseFloat(document.getElementById('billDiscPct').value) || 0;
-  const eFlat = parseFloat(document.getElementById('billDiscFlat').value) || 0;
-  const eAmt = Math.min(sub, sub * ePct / 100 + eFlat);
-  const total = sub - eAmt;
-
-  let html = '';
-  if (cart.length === 0) { document.getElementById('totalsSection').innerHTML = ''; return; }
-
-  html += `<div class="t-row"><span>Subtotal</span><span>₹${sub.toFixed(2)}</span></div>`;
-  if (eAmt > 0) {
-    let lbl = 'Discount';
-    if (ePct > 0 && eFlat > 0) lbl += ` (${ePct}% + ₹${eFlat})`;
-    else if (ePct > 0) lbl += ` (${ePct}%)`;
-    else lbl += ` (₹${eFlat} flat)`;
-    html += `<div class="t-row disc"><span>${lbl}</span><span>−₹${eAmt.toFixed(2)}</span></div>`;
-  }
-  html += `<div class="t-row grand"><span>Total</span><span>₹${total.toFixed(2)}</span></div>`;
-  document.getElementById('totalsSection').innerHTML = html;
+// ── TOTALS ──
+function getCalc(){
+  const gross=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const iDisc=cart.reduce((s,i)=>s+i.price*i.qty*(i.discount||0)/100,0);
+  const sub=gross-iDisc;
+  const ePct=parseFloat(document.getElementById('billDiscPct').value)||0;
+  const eFlat=parseFloat(document.getElementById('billDiscFlat').value)||0;
+  const eAmt=Math.min(sub,sub*ePct/100+eFlat);
+  return{gross,iDisc,sub,ePct,eFlat,eAmt,total:sub-eAmt};
+}
+function renderTotals(){
+  if(!cart.length){document.getElementById('totalsSection').innerHTML='';return;}
+  const{sub,eAmt,ePct,eFlat,total}=getCalc();
+  let h=`<div class="t-row"><span>Subtotal</span><span>₹${sub.toFixed(2)}</span></div>`;
+  if(eAmt>0){let l='Discount';if(ePct>0&&eFlat>0)l+=` (${ePct}%+₹${eFlat})`;else if(ePct>0)l+=` (${ePct}%)`;else l+=` (₹${eFlat} flat)`;h+=`<div class="t-row disc"><span>${l}</span><span>−₹${eAmt.toFixed(2)}</span></div>`;}
+  h+=`<div class="t-row grand"><span>Total</span><span>₹${total.toFixed(2)}</span></div>`;
+  document.getElementById('totalsSection').innerHTML=h;
 }
 
 // ── COMPLETE SALE ──
-function completeSale() {
-  if (cart.length === 0) return;
-  const custName = document.getElementById('custName').value.trim();
-  const custPhone = document.getElementById('custPhone').value.trim();
-  const gross = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const itemDisc = cart.reduce((s, i) => s + i.price * i.qty * (i.discount || 0) / 100, 0);
-  const sub = gross - itemDisc;
-  const ePct = parseFloat(document.getElementById('billDiscPct').value) || 0;
-  const eFlat = parseFloat(document.getElementById('billDiscFlat').value) || 0;
-  const eAmt = Math.min(sub, sub * ePct / 100 + eFlat);
-  const total = sub - eAmt;
-  const saleId = 'INF-' + String(sales.length + 1).padStart(4, '0');
-
-  const sale = {
-    id: saleId,
-    date: new Date().toISOString(),
-    custName, custPhone,
-    items: cart.map(i => ({ ...i })),
-    grossSubtotal: gross,
-    itemDiscTotal: itemDisc,
-    subtotal: sub,
-    extraPct: ePct,
-    extraFlat: eFlat,
-    extraDiscAmt: eAmt,
-    total
-  };
-
+function completeSale(){
+  if(!cart.length)return;
+  const custName=document.getElementById('custName').value.trim();
+  const custPhone=document.getElementById('custPhone').value.trim();
+  const{gross,iDisc,sub,ePct,eFlat,eAmt,total}=getCalc();
+  const saleId='INF-'+String(sales.length+1).padStart(4,'0');
+  const sale={id:saleId,date:new Date().toISOString(),custName,custPhone,
+    items:cart.map(i=>({...i})),grossSubtotal:gross,itemDiscTotal:iDisc,
+    subtotal:sub,extraPct:ePct,extraFlat:eFlat,extraDiscAmt:eAmt,total};
   sales.unshift(sale);
-  localStorage.setItem('infinity_sales', JSON.stringify(sales));
-  currentSale = sale;
+  localStorage.setItem('infinity_sales',JSON.stringify(sales));
+  currentSale=sale;
   showReceipt(sale);
   downloadPDF(sale);
   scheduleAutoSync();
 }
-
-// ── RESET BILL ──
-function resetBill() {
-  cart = [];
-  document.getElementById('custName').value = '';
-  document.getElementById('custPhone').value = '';
-  document.getElementById('billDiscPct').value = '';
-  document.getElementById('billDiscFlat').value = '';
-  renderCart();
-  renderTotals();
+function resetBill(){
+  cart=[];
+  ['custName','custPhone','billDiscPct','billDiscFlat'].forEach(id=>document.getElementById(id).value='');
+  renderCart();renderTotals();
   document.getElementById('itemName').focus();
 }
+function closeReceipt(){document.getElementById('receiptModal').classList.remove('open');resetBill();}
 
-// ── RECEIPT MODAL ──
-function showReceipt(sale) {
-  const now = new Date(sale.date);
-  const ds = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
-  const ts = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+// ── QR helper ──
+function makeQR(url,size){
+  return new Promise(res=>{
+    const w=document.getElementById('qrHidden');w.innerHTML='';
+    new QRCode(w,{text:url,width:size,height:size,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    setTimeout(()=>{
+      const c=w.querySelector('canvas'),img=w.querySelector('img');
+      res(c?c.toDataURL('image/png'):img?img.src:null);
+    },100);
+  });
+}
 
-  const itemsHtml = sale.items.map((item, idx) => {
-    const d = item.discount || 0;
-    const lt = item.price * item.qty * (1 - d / 100);
-    return `<div class="r-item" style="background:${idx % 2 === 0 ? '#faf7f2' : 'white'};">
-      <div class="r-item-left">
-        <div class="r-item-name">${item.name}${d > 0 ? `<span class="r-disc-tag">${d}% off</span>` : ''}</div>
-        <div class="r-item-detail">x${item.qty} @ ₹${item.price.toFixed(2)}</div>
-      </div>
-      <div class="r-item-total">₹${lt.toFixed(2)}</div>
-    </div>`;
+// ── SHOW RECEIPT ──
+async function showReceipt(sale){
+  const now=new Date(sale.date);
+  const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const itemsHtml=sale.items.map(item=>{
+    const d=item.discount||0,lt=item.price*item.qty*(1-d/100);
+    return `<div class="r-item"><div class="r-item-l"><div class="r-item-name">${item.name}${d>0?` <span class="r-disc-tag">${d}%</span>`:''}</div><div class="r-item-detail">×${item.qty} @ ₹${item.price.toFixed(2)}</div></div><div class="r-item-amt">₹${lt.toFixed(2)}</div></div>`;
   }).join('');
-
-  const idr = (sale.itemDiscTotal || 0) > 0
-    ? `<div class="r-row green"><span>Item Discounts</span><span>−₹${sale.itemDiscTotal.toFixed(2)}</span></div>` : '';
-  const subRow = (sale.itemDiscTotal || 0) > 0
-    ? `<div class="r-row"><span>Subtotal</span><span>₹${sale.subtotal.toFixed(2)}</span></div>` : '';
-  let eLabel = 'Bill Discount';
-  if ((sale.extraPct || 0) > 0 && (sale.extraFlat || 0) > 0) eLabel += ` (${sale.extraPct}%+₹${sale.extraFlat})`;
-  else if ((sale.extraPct || 0) > 0) eLabel += ` (${sale.extraPct}%)`;
-  else if ((sale.extraFlat || 0) > 0) eLabel += ` (₹${sale.extraFlat} flat)`;
-  const edr = (sale.extraDiscAmt || 0) > 0
-    ? `<div class="r-row green"><span>${eLabel}</span><span>−₹${sale.extraDiscAmt.toFixed(2)}</span></div>` : '';
-
-  document.getElementById('receiptContent').innerHTML = `
+  const idr=(sale.itemDiscTotal||0)>0?`<div class="r-row saved"><span>Item Savings</span><span>−₹${sale.itemDiscTotal.toFixed(2)}</span></div>`:'';
+  const subR=(sale.itemDiscTotal||0)>0?`<div class="r-row"><span>Subtotal</span><span>₹${sale.subtotal.toFixed(2)}</span></div>`:'';
+  let eL='Bill Discount';
+  if((sale.extraPct||0)>0&&(sale.extraFlat||0)>0)eL+=` (${sale.extraPct}%+₹${sale.extraFlat})`;
+  else if((sale.extraPct||0)>0)eL+=` (${sale.extraPct}%)`;
+  else if((sale.extraFlat||0)>0)eL+=` (₹${sale.extraFlat} flat)`;
+  const edr=(sale.extraDiscAmt||0)>0?`<div class="r-row saved"><span>${eL}</span><span>−₹${sale.extraDiscAmt.toFixed(2)}</span></div>`:'';
+  const qrUrl=await makeQR(INSTAGRAM_URL,80);
+  const qrImg=qrUrl?`<img src="${qrUrl}" width="64" height="64" style="display:block;image-rendering:pixelated;border:1.5px solid #ddd;border-radius:4px;">` :'';
+  document.getElementById('receiptContent').innerHTML=`
     <div class="receipt">
-      <div class="r-header">
+      <div class="r-hdr">
         <div class="r-store-name">∞ Infinity Store</div>
-        <div class="r-store-sub">Stationery Store</div>
-        <div class="r-meta-row">
-          <span>📅 ${ds} &nbsp;🕐 ${ts}</span>
-          <span style="font-weight:700;">${sale.id}</span>
-        </div>
-        ${(sale.custName || sale.custPhone) ? `
-        <div class="r-cust-row">
-          ${sale.custName ? `<span>👤 ${sale.custName}</span>` : ''}
-          ${sale.custPhone ? `<span>📞 ${sale.custPhone}</span>` : ''}
-        </div>` : ''}
+        <div class="r-store-sub">Stationery Store · ${STORE_ADDRESS}</div>
+        <div class="r-meta"><span>${ds} · ${ts}</span><span style="font-weight:700;">${sale.id}</span></div>
+        ${(sale.custName||sale.custPhone)?`<div class="r-cust">${sale.custName?`<span>👤 ${sale.custName}</span>`:''}${sale.custPhone?`<span>📞 ${sale.custPhone}</span>`:''}</div>`:''}
       </div>
-      <div class="r-items-hdr"><span>Item</span><span>Qty</span><span>Rate</span><span style="text-align:right;">Amt</span></div>
+      <div class="r-tbl-hdr"><span>Item</span><span style="text-align:center">Qty</span><span style="text-align:center">Rate</span><span style="text-align:right">Amt</span></div>
       <div class="r-items">${itemsHtml}</div>
       <div class="r-totals">
         <div class="r-row"><span>Gross Total</span><span>₹${sale.grossSubtotal.toFixed(2)}</span></div>
-        ${idr}${subRow}${edr}
+        ${idr}${subR}${edr}
       </div>
-      <div class="r-grand">
-        <span>TOTAL</span>
-        <span>₹${sale.total.toFixed(2)}</span>
+      <div class="r-grand"><span class="r-grand-lbl">TOTAL PAYABLE</span><span class="r-grand-amt">₹${sale.total.toFixed(2)}</span></div>
+      <div class="r-insta">
+        <div class="r-qr">${qrImg}</div>
+        <div class="r-insta-txt">
+          <div class="r-insta-title">📸 Follow us on Instagram</div>
+          <div class="r-insta-handle">@${INSTAGRAM_HANDLE}</div>
+          <div class="r-insta-sub">Scan for offers, new arrivals<br>&amp; stationery updates!</div>
+        </div>
       </div>
-      <div class="r-footer">
-        <div>★ Thank you for shopping at Infinity Store! ★</div>
-        <div style="margin-top:3px;font-size:0.63rem;">Please keep this receipt for future reference.</div>
-      </div>
+      <div class="r-foot"><p>★ Thank you for shopping at Infinity Store! ★</p><p style="margin-top:2px;">Please keep this receipt for future reference.</p></div>
     </div>`;
-
   document.getElementById('receiptModal').classList.add('open');
 }
 
-function closeReceipt() {
-  document.getElementById('receiptModal').classList.remove('open');
-  resetBill();
-}
+// ── PDF  (multi-page safe) ──
+async function downloadPDF(sale){
+  if(!window.jspdf)return;
+  const{jsPDF}=window.jspdf;
 
-// ── PDF DOWNLOAD ──
-function downloadPDF(sale) {
-  if (!window.jspdf) return;
-  const { jsPDF } = window.jspdf;
-  const W = 148, doc = new jsPDF({ unit:'mm', format:[W, 210], orientation:'portrait' });
-  const now = new Date(sale.date);
-  const ds = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
-  const ts = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
-  const lm = 11, rm = W - 11, mid = W / 2;
-  let y = 14;
+  // ── page dimensions ──
+  const W=80, PH=210;          // 80 mm wide, A5 height (210 mm)
+  const MARGIN_BOT=8;          // reserve 8 mm at bottom of every page
+  const SAFE_BOTTOM=PH-MARGIN_BOT; // content must stay above this
 
-  // Header bar
-  doc.setFillColor(26, 18, 8);
-  doc.rect(0, 0, W, 28, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(20);
-  doc.setTextColor(200, 169, 110);
-  doc.text('∞ Infinity Store', mid, 11.5, {align:'center'});
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(180, 180, 180);
-  doc.text('STATIONERY STORE', mid, 18, {align:'center'});
-  doc.setFontSize(7.5);
-  doc.setTextColor(140, 140, 140);
-  doc.text(`${ds}   ${ts}`, mid, 24.5, {align:'center'});
-  y = 34;
+  const doc=new jsPDF({unit:'mm',format:[W,PH],orientation:'portrait'});
+  const now=new Date(sale.date);
+  const ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const lm=3, rm=W-3, mid=W/2;
+  let y=7;
+  let pageNum=1;
 
-  // Meta
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(100, 100, 100);
-  doc.text('Receipt:', lm, y);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(26, 18, 8);
-  doc.text(sale.id, lm + 22, y);
-  y += 6;
-  if (sale.custName) {
-    doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 100, 100);
-    doc.text('Customer:', lm, y);
-    doc.setFont('helvetica', 'bold'); doc.setTextColor(26, 18, 8);
-    doc.text(sale.custName, lm + 22, y); y += 5.5;
-  }
-  if (sale.custPhone) {
-    doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 100, 100);
-    doc.text('Phone:', lm, y);
-    doc.setFont('helvetica', 'bold'); doc.setTextColor(26, 18, 8);
-    doc.text(sale.custPhone, lm + 22, y); y += 5.5;
-  }
-  y += 2;
+  // ── helpers ──────────────────────────────────────────
+  // Call before drawing anything that needs `neededMm` of vertical space.
+  // If it won't fit, adds a new page, reprints the column header, resets y.
+  function ensureSpace(neededMm){
+    if(y+neededMm > SAFE_BOTTOM){
+      // page-number footer on current page
+      doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,160,160);
+      doc.text('Page '+pageNum,mid,PH-3,{align:'center'});
 
-  // Divider
-  doc.setDrawColor(180, 160, 130);
-  doc.setLineWidth(0.3);
-  doc.setLineDashPattern([2, 2], 0);
-  doc.line(lm, y, rm, y);
-  y += 5;
+      doc.addPage([W,PH]);
+      pageNum++;
+      y=6;
 
-  // Table header
-  doc.setFillColor(235, 228, 214);
-  doc.rect(lm, y - 3.5, rm - lm, 8, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(7.5);
-  doc.setTextColor(80, 60, 30);
-  doc.text('ITEM', lm + 2, y + 1);
-  doc.text('QTY', mid - 8, y + 1, {align:'center'});
-  doc.text('RATE', mid + 14, y + 1, {align:'center'});
-  doc.text('AMOUNT', rm - 2, y + 1, {align:'right'});
-  y += 9;
+      // ── continuation header (compact) ──
+      doc.setFillColor(0,0,0);doc.rect(0,0,W,10,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(230,215,185);
+      doc.text('INFINITY STORE',mid,6.5,{align:'center'});
+      doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.setTextColor(180,175,165);
+      doc.text('(continued) '+sale.id,mid,10,{align:'center'});
+      y=16;
 
-  // Items
-  doc.setLineDashPattern([], 0);
-  doc.setDrawColor(220, 210, 195);
-  doc.setLineWidth(0.2);
-
-  sale.items.forEach((item, idx) => {
-    const d = item.discount || 0;
-    const lt = item.price * item.qty * (1 - d / 100);
-    if (idx % 2 === 0) { doc.setFillColor(252, 249, 244); doc.rect(lm, y - 3.5, rm - lm, 9, 'F'); }
-    const nameLines = doc.splitTextToSize(item.name, 65);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.setTextColor(26, 18, 8);
-    nameLines.forEach((line, li) => doc.text(line, lm + 2, y + li * 4));
-    const nameH = nameLines.length * 4;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(60, 60, 60);
-    doc.text(String(item.qty), mid - 8, y, {align:'center'});
-    doc.text('Rs.' + item.price.toFixed(2), mid + 14, y, {align:'center'});
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(26, 18, 8);
-    doc.text('Rs.' + lt.toFixed(2), rm - 2, y, {align:'right'});
-    if (d > 0) {
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(7);
-      doc.setTextColor(50, 130, 90);
-      doc.text(`  ${d}% discount applied`, lm + 2, y + nameH);
-      y += 4;
+      // reprint column header
+      doc.setFillColor(25,25,25);doc.rect(lm,y-3,rm-lm,6,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
+      doc.text('ITEM',lm+1.5,y+0.5);
+      doc.text('QTY',mid-8,y+0.5,{align:'center'});
+      doc.text('RATE',mid+9,y+0.5,{align:'center'});
+      doc.text('AMT',rm-1,y+0.5,{align:'right'});
+      y+=7;
     }
-    y += nameH + 3;
-    doc.setDrawColor(220, 210, 195);
-    doc.line(lm, y - 0.5, rm, y - 0.5);
-  });
-  y += 5;
+  }
 
-  // Totals
-  const tRow = (label, value, bold = false, color = [80, 80, 80]) => {
-    doc.setFont('helvetica', bold ? 'bold' : 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...color);
-    doc.text(label, lm + 2, y);
-    doc.text(value, rm - 2, y, {align:'right'});
-    y += 5.5;
+  // ── PAGE 1 HEADER ────────────────────────────────────
+  doc.setFillColor(0,0,0);doc.rect(0,0,W,21,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(230,215,185);
+  doc.text('INFINITY STORE',mid,8.5,{align:'center'});
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(185,180,170);
+  doc.text('STATIONERY STORE · HARIDWAR',mid,13.5,{align:'center'});
+  doc.setFontSize(6);doc.setTextColor(155,150,140);
+  doc.text(ds+'   '+ts,mid,18.5,{align:'center'});
+  y=26;
+
+  // ── receipt meta ──
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(0,0,0);
+  doc.text('Receipt: '+sale.id,lm,y);y+=5;
+  if(sale.custName){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text('Customer: '+sale.custName,lm,y);y+=4.5;}
+  if(sale.custPhone){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text('Phone:    '+sale.custPhone,lm,y);y+=4.5;}
+  y+=1;
+
+  doc.setDrawColor(0,0,0);doc.setLineWidth(0.5);doc.line(lm,y,rm,y);y+=4;
+
+  // ── column header ──
+  doc.setFillColor(25,25,25);doc.rect(lm,y-3,rm-lm,6,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
+  doc.text('ITEM',lm+1.5,y+0.5);
+  doc.text('QTY',mid-8,y+0.5,{align:'center'});
+  doc.text('RATE',mid+9,y+0.5,{align:'center'});
+  doc.text('AMT',rm-1,y+0.5,{align:'right'});
+  y+=7;
+
+  // ── ITEMS LOOP ───────────────────────────────────────
+  doc.setLineWidth(0.15);doc.setDrawColor(185,185,185);
+
+  sale.items.forEach((item,idx)=>{
+    const d=item.discount||0, lt=item.price*item.qty*(1-d/100);
+    const lines=doc.splitTextToSize(item.name,38);
+    const nh=lines.length*3.5;
+    const rowH=nh+(d>0?4:0)+3.5;   // total mm this row will consume
+
+    ensureSpace(rowH);              // ← page-break check
+
+    if(idx%2===0){doc.setFillColor(246,245,242);doc.rect(lm,y-3,rm-lm,rowH,'F');}
+
+    doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(0,0,0);
+    lines.forEach((ln,li)=>doc.text(ln,lm+1.5,y+li*3.5));
+
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(45,45,45);
+    doc.text(String(item.qty),mid-8,y,{align:'center'});
+    doc.text('Rs.'+item.price.toFixed(2),mid+9,y,{align:'center'});
+    doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
+    doc.text('Rs.'+lt.toFixed(2),rm-1,y,{align:'right'});
+
+    if(d>0){
+      doc.setFont('helvetica','italic');doc.setFontSize(5.5);doc.setTextColor(75,75,75);
+      doc.text(d+'% off · saved Rs.'+(item.price*item.qty*d/100).toFixed(2),lm+1.5,y+nh);
+      y+=3;
+    }
+    y+=nh+2;
+    doc.line(lm,y,rm,y);
+    y+=1.5;
+  });
+  y+=2;
+
+  // ── TOTALS BLOCK ─────────────────────────────────────
+  // Estimate height: 1 line separator + rows + grand-total box + footer + QR
+  const totalsEstimate=60;
+  ensureSpace(totalsEstimate);
+
+  doc.setLineWidth(0.5);doc.setDrawColor(0,0,0);doc.line(lm,y,rm,y);y+=3.5;
+
+  const tRow=(label,value)=>{
+    doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(55,55,55);
+    doc.text(label,lm+1.5,y);doc.text(value,rm-1,y,{align:'right'});y+=4.5;
+  };
+  const tRowBold=(label,value)=>{
+    doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(0,0,0);
+    doc.text(label,lm+1.5,y);doc.text(value,rm-1,y,{align:'right'});y+=4.5;
   };
 
-  doc.setLineDashPattern([2, 2], 0);
-  doc.setDrawColor(190, 170, 140);
-  doc.line(lm, y - 2, rm, y - 2);
-  y += 2;
-
-  tRow('Gross Total', 'Rs.' + sale.grossSubtotal.toFixed(2), false, [50, 50, 50]);
-  if ((sale.itemDiscTotal || 0) > 0) tRow('Item Discounts', '-Rs.' + sale.itemDiscTotal.toFixed(2), false, [40, 120, 80]);
-  if ((sale.itemDiscTotal || 0) > 0) tRow('Subtotal', 'Rs.' + sale.subtotal.toFixed(2), false, [50, 50, 50]);
-  if ((sale.extraDiscAmt || 0) > 0) {
-    let lbl = 'Bill Discount';
-    if ((sale.extraPct || 0) > 0 && (sale.extraFlat || 0) > 0) lbl += ` (${sale.extraPct}%+Rs.${sale.extraFlat})`;
-    else if ((sale.extraPct || 0) > 0) lbl += ` (${sale.extraPct}%)`;
-    else lbl += ` (Rs.${sale.extraFlat} flat)`;
-    tRow(lbl, '-Rs.' + sale.extraDiscAmt.toFixed(2), false, [40, 120, 80]);
+  tRow('Gross Total','Rs.'+sale.grossSubtotal.toFixed(2));
+  if((sale.itemDiscTotal||0)>0){
+    tRowBold('Item Savings','-Rs.'+sale.itemDiscTotal.toFixed(2));
+    tRow('Subtotal','Rs.'+sale.subtotal.toFixed(2));
   }
-  y += 2;
+  if((sale.extraDiscAmt||0)>0){
+    let l='Bill Discount';
+    if((sale.extraPct||0)>0&&(sale.extraFlat||0)>0)l+=` (${sale.extraPct}%+Rs.${sale.extraFlat})`;
+    else if((sale.extraPct||0)>0)l+=` (${sale.extraPct}%)`;
+    else l+=` (Rs.${sale.extraFlat} flat)`;
+    tRowBold(l,'-Rs.'+sale.extraDiscAmt.toFixed(2));
+  }
+  // item count summary
+  const totalUnits=sale.items.reduce((s,i)=>s+i.qty,0);
+  doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(120,120,120);
+  doc.text(sale.items.length+' item type'+(sale.items.length>1?'s':')+' · '+totalUnits+' unit'+(totalUnits>1?'s':''),lm+1.5,y);y+=3.5;
 
-  // Grand total box
-  doc.setFillColor(26, 18, 8);
-  doc.roundedRect(lm, y - 4, rm - lm, 13, 2.5, 2.5, 'F');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.setTextColor(255, 255, 255);
-  doc.text('TOTAL', lm + 5, y + 5);
-  doc.setFontSize(14);
-  doc.setTextColor(200, 169, 110);
-  doc.text('Rs.' + sale.total.toFixed(2), rm - 5, y + 5.5, {align:'right'});
-  y += 18;
+  y+=1.5;
 
-  // Footer
-  doc.setLineDashPattern([2, 2], 0);
-  doc.setDrawColor(190, 170, 140);
-  doc.line(lm, y - 2, rm, y - 2);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(140, 120, 90);
-  doc.text('Thank you for shopping at Infinity Store!', mid, y + 4, {align:'center'});
-  doc.setFontSize(7.5);
-  doc.setTextColor(170, 155, 135);
-  doc.text('Please keep this receipt for future reference.', mid, y + 9, {align:'center'});
+  // ── grand total box ──
+  doc.setFillColor(0,0,0);doc.rect(lm,y-2,rm-lm,12,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(195,188,170);
+  doc.text('TOTAL PAYABLE',lm+2,y+5.5);
+  doc.setFontSize(13);doc.setTextColor(255,255,255);
+  doc.text('Rs.'+sale.total.toFixed(2),rm-2,y+6,{align:'right'});
+  y+=17;
 
-  doc.save(`Infinity-${sale.id}-${ds.replace(/ /g, '-')}.pdf`);
+  // ── Instagram / QR ───────────────────────────────────
+  ensureSpace(30);
+  doc.setLineDashPattern([1.5,1.5],0);
+  doc.setDrawColor(160,160,160);doc.setLineWidth(0.3);
+  doc.line(lm,y,rm,y);y+=3;doc.setLineDashPattern([],0);
+
+  const qrDU=await makeQR(INSTAGRAM_URL,140);
+  const qrS=20;
+  if(qrDU){try{doc.addImage(qrDU,'PNG',lm,y,qrS,qrS);}catch(e){}}
+  const tx=lm+qrS+3;
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(0,0,0);
+  doc.text('Follow on Instagram',tx,y+4);
+  doc.setFontSize(8.5);doc.setTextColor(20,20,20);
+  doc.text('@'+INSTAGRAM_HANDLE,tx,y+9.5);
+  doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(80,80,80);
+  doc.text('Scan QR for offers &',tx,y+14);
+  doc.text('new arrivals!',tx,y+18);
+  y+=qrS+5;
+
+  // ── thank-you footer ──
+  ensureSpace(14);
+  doc.setLineDashPattern([1.5,1.5],0);
+  doc.setDrawColor(160,160,160);doc.line(lm,y,rm,y);y+=4;doc.setLineDashPattern([],0);
+  doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(20,20,20);
+  doc.text('Thank you for shopping at Infinity Store!',mid,y,{align:'center'});y+=4;
+  doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(90,90,90);
+  doc.text('Please keep this receipt for future reference.',mid,y,{align:'center'});
+
+  // last page number
+  doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(160,160,160);
+  doc.text('Page '+pageNum+' of '+pageNum,mid,PH-3,{align:'center'});
+
+  doc.save('Infinity-'+sale.id+'-'+ds.replace(/ /g,'-')+'.pdf');
 }
 
 // ── REPORTS ──
-function renderReports() {
-  const today = new Date().toDateString();
-  const todaySales = sales.filter(s => new Date(s.date).toDateString() === today);
-  const todayRev = todaySales.reduce((s, t) => s + t.total, 0);
-  const totalItems = sales.reduce((s, t) => s + t.items.reduce((a, i) => a + i.qty, 0), 0);
-  const avg = sales.length > 0 ? sales.reduce((s, t) => s + t.total, 0) / sales.length : 0;
-  document.getElementById('rToday').textContent = '₹' + todayRev.toFixed(0);
-  document.getElementById('rTxns').textContent = sales.length;
-  document.getElementById('rItems').textContent = totalItems;
-  document.getElementById('rAvg').textContent = '₹' + avg.toFixed(0);
-
-  const hist = document.getElementById('saleHistory');
-  if (!sales.length) { hist.innerHTML = '<div class="no-sales">No sales yet</div>'; return; }
-  hist.innerHTML = sales.map((s, idx) => {
-    const d = new Date(s.date);
+function renderReports(){
+  const today=new Date().toDateString();
+  const tS=sales.filter(s=>new Date(s.date).toDateString()===today);
+  const tR=tS.reduce((s,t)=>s+t.total,0);
+  const ti=sales.reduce((s,t)=>s+t.items.reduce((a,i)=>a+i.qty,0),0);
+  const avg=sales.length>0?sales.reduce((s,t)=>s+t.total,0)/sales.length:0;
+  document.getElementById('rToday').textContent='₹'+tR.toFixed(0);
+  document.getElementById('rTxns').textContent=sales.length;
+  document.getElementById('rItems').textContent=ti;
+  document.getElementById('rAvg').textContent='₹'+avg.toFixed(0);
+  const h=document.getElementById('saleHistory');
+  if(!sales.length){h.innerHTML='<div class="no-sales">No sales yet</div>';return;}
+  h.innerHTML=sales.map((s,idx)=>{
+    const d=new Date(s.date);
     return `<div class="sale-card">
-      <div class="sale-card-top">
-        <span class="sale-id">${s.id}</span>
-        <span class="sale-total-amt">₹${s.total.toFixed(2)}</span>
-      </div>
-      <div class="sale-time">${d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})} ${d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>
-      ${(s.custName || s.custPhone) ? `<div style="font-size:0.68rem;color:#888;margin:0.15rem 0;">👤 ${s.custName||''} ${s.custPhone?'📞 '+s.custPhone:''}</div>` : ''}
-      <div class="sale-items-list">${s.items.map(i => i.name + ' ×' + i.qty).join(', ')}</div>
+      <div class="sale-card-top"><span class="sale-id">${s.id}</span><span class="sale-total-amt">₹${s.total.toFixed(2)}</span></div>
+      <div class="sale-time">${d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})} · ${d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>
+      ${(s.custName||s.custPhone)?`<div style="font-size:0.66rem;color:#777;margin:0.12rem 0;font-family:'IBM Plex Mono',monospace;">👤 ${s.custName||''} ${s.custPhone?'📞 '+s.custPhone:''}</div>`:''}
+      <div class="sale-items-list">${s.items.map(i=>i.name+'×'+i.qty).join(', ')}</div>
       <button class="sale-reprint-btn" onclick="currentSale=sales[${idx}];showReceipt(sales[${idx}])">📋 View / Reprint</button>
     </div>`;
   }).join('');
 }
 
 // ── TOAST ──
-function showToast(msg) {
-  const t = document.getElementById('appToast');
-  t.textContent = msg;
-  t.style.opacity = '1';
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.style.opacity = '0', 2500);
+function showToast(m){const t=document.getElementById('appToast');t.textContent=m;t.style.opacity='1';clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',2400);}
+
+// ══════════════════════════════════
+//  GOOGLE DRIVE SYNC
+// ══════════════════════════════════
+const GDRIVE_SCOPES='https://www.googleapis.com/auth/drive.appdata';
+const BACKUP_FILENAME='infinity-pos-data.json';
+let gapiReady=false,tokenClient=null,driveToken=null;
+let autoSyncEnabled=localStorage.getItem('gdrive_autosync')==='true';
+let autoSyncTimer=null;
+let GDRIVE_CLIENT_ID=localStorage.getItem('gdrive_client_id')||'';
+
+function initDrivePanel(){
+  if(GDRIVE_CLIENT_ID){document.getElementById('driveNeedsSetup').style.display='none';document.getElementById('driveSignedOut').style.display='block';}
+  else{document.getElementById('driveNeedsSetup').style.display='block';document.getElementById('driveSignedOut').style.display='none';document.getElementById('driveSignedIn').style.display='none';}
 }
-
-// ── GOOGLE DRIVE SYNC ──
-const GDRIVE_SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
-const BACKUP_FILENAME = 'infinity-pos-data.json';
-let gapiReady = false, tokenClient = null, driveToken = null;
-let autoSyncEnabled = localStorage.getItem('gdrive_autosync') === 'true';
-let autoSyncTimer = null;
-let GDRIVE_CLIENT_ID = localStorage.getItem('gdrive_client_id') || '';
-
-function initDrivePanel() {
-  if (GDRIVE_CLIENT_ID) {
-    document.getElementById('driveNeedsSetup').style.display = 'none';
-    document.getElementById('driveSignedOut').style.display = 'block';
-  } else {
-    document.getElementById('driveNeedsSetup').style.display = 'block';
-    document.getElementById('driveSignedOut').style.display = 'none';
-    document.getElementById('driveSignedIn').style.display = 'none';
-  }
+function toggleDrivePanel(){const p=document.getElementById('drivePanel');const o=p.style.display!=='none';p.style.display=o?'none':'block';if(!o){initDrivePanel();updateAutoSyncUI();}}
+function showDriveHelp(){const s=document.getElementById('driveHelpSteps');s.style.display=s.style.display==='none'?'block':'none';}
+function showDriveClientIdSetup(){document.getElementById('driveNeedsSetup').style.display='block';document.getElementById('driveSignedOut').style.display='none';document.getElementById('driveSignedIn').style.display='none';document.getElementById('driveClientIdInput').value=GDRIVE_CLIENT_ID;}
+function saveDriveClientId(){const v=document.getElementById('driveClientIdInput').value.trim();if(!v){showToast('Paste your Client ID');return;}if(!v.includes('.apps.googleusercontent.com')){showToast("Invalid Client ID");return;}GDRIVE_CLIENT_ID=v;localStorage.setItem('gdrive_client_id',v);document.getElementById('driveNeedsSetup').style.display='none';document.getElementById('driveSignedOut').style.display='block';showToast('✓ Client ID saved!');}
+function setDriveIcon(s){const m={idle:'☁',syncing:'🔄',ok:'✅',error:'⚠️'};document.getElementById('driveBtnIcon').textContent=m[s]||'☁';}
+function driveSetStatus(m,c){const e=document.getElementById('driveSyncStatus');if(e){e.textContent=m;e.style.color=c||'#aaa';}}
+function updateAutoSyncUI(){const sl=document.getElementById('autoSyncSlider'),th=document.getElementById('autoSyncThumb'),tg=document.getElementById('autoSyncToggle');if(!sl)return;tg.checked=autoSyncEnabled;sl.style.background=autoSyncEnabled?'#0d0d0d':'#ccc';th.style.left=autoSyncEnabled?'21px':'3px';}
+function toggleAutoSync(e){autoSyncEnabled=e;localStorage.setItem('gdrive_autosync',e?'true':'false');updateAutoSyncUI();showToast(e?'Auto-sync ON':'Auto-sync OFF');if(e&&driveToken)driveBackupSilent();}
+function scheduleAutoSync(){if(!autoSyncEnabled||!driveToken)return;clearTimeout(autoSyncTimer);autoSyncTimer=setTimeout(()=>driveBackupSilent(),3000);}
+async function driveSignIn(){
+  if(!GDRIVE_CLIENT_ID){initDrivePanel();return;}
+  if(!document.getElementById('gapi-script')){const s=document.createElement('script');s.id='gapi-script';s.src='https://apis.google.com/js/api.js';s.onload=()=>{gapi.load('client',async()=>{await gapi.client.init({discoveryDocs:['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']});gapiReady=true;if(tokenClient)tokenClient.requestAccessToken({prompt:''});});};document.head.appendChild(s);}
+  if(!document.getElementById('gis-script')){const s=document.createElement('script');s.id='gis-script';s.src='https://accounts.google.com/gsi/client';s.onload=()=>{tokenClient=google.accounts.oauth2.initTokenClient({client_id:GDRIVE_CLIENT_ID,scope:GDRIVE_SCOPES,callback:async(r)=>{if(r.error){driveSetStatus('Sign in failed','#c00');return;}driveToken=r.access_token;gapi.client.setToken({access_token:driveToken});const p=await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+driveToken}}).then(x=>x.json());document.getElementById('driveUserInfo').textContent='✓ Signed in as '+(p.email||'Google User');document.getElementById('driveSignedOut').style.display='none';document.getElementById('driveSignedIn').style.display='block';document.getElementById('driveDot').style.display='block';const ls=localStorage.getItem('gdrive_last_sync');driveSetStatus(ls?'✓ Last saved: '+new Date(ls).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'Connected','#2d6a4f');setDriveIcon('ok');updateAutoSyncUI();if(autoSyncEnabled)driveBackupSilent();}});if(gapiReady)tokenClient.requestAccessToken({prompt:''});};document.head.appendChild(s);}else if(tokenClient){tokenClient.requestAccessToken({prompt:''});}
 }
-
-function toggleDrivePanel() {
-  const panel = document.getElementById('drivePanel');
-  const isOpen = panel.style.display !== 'none';
-  panel.style.display = isOpen ? 'none' : 'block';
-  if (!isOpen) { initDrivePanel(); updateAutoSyncUI(); }
+async function driveUpload(data){
+  const l=await gapi.client.drive.files.list({spaces:'appDataFolder',q:`name='${BACKUP_FILENAME}'`,fields:'files(id)'});
+  const f=l.result.files,b=new Blob([data],{type:'application/json'}),fm=new FormData();
+  if(f.length>0){fm.append('metadata',new Blob([JSON.stringify({name:BACKUP_FILENAME})],{type:'application/json'}));fm.append('file',b);await fetch(`https://www.googleapis.com/upload/drive/v3/files/${f[0].id}?uploadType=multipart`,{method:'PATCH',headers:{Authorization:'Bearer '+driveToken},body:fm});}
+  else{fm.append('metadata',new Blob([JSON.stringify({name:BACKUP_FILENAME,parents:['appDataFolder']})],{type:'application/json'}));fm.append('file',b);await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{Authorization:'Bearer '+driveToken},body:fm});}
 }
-
-function showDriveHelp() {
-  const s = document.getElementById('driveHelpSteps');
-  s.style.display = s.style.display === 'none' ? 'block' : 'none';
+async function driveBackup(){
+  if(!driveToken){driveSetStatus('Not signed in','#c00');return;}
+  const btn=document.getElementById('backupBtn');if(btn)btn.disabled=true;
+  driveSetStatus('Saving...','#4a90d9');setDriveIcon('syncing');
+  try{await driveUpload(JSON.stringify({sales,backed_up:new Date().toISOString()}));const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});driveSetStatus('✓ Saved at '+t,'#2d6a4f');setDriveIcon('ok');showToast('✓ Saved to Google Drive!');localStorage.setItem('gdrive_last_sync',new Date().toISOString());}
+  catch(e){driveSetStatus('Save failed','#c00');setDriveIcon('error');}
+  if(btn)btn.disabled=false;
 }
-
-function showDriveClientIdSetup() {
-  document.getElementById('driveNeedsSetup').style.display = 'block';
-  document.getElementById('driveSignedOut').style.display = 'none';
-  document.getElementById('driveSignedIn').style.display = 'none';
-  document.getElementById('driveClientIdInput').value = GDRIVE_CLIENT_ID;
+async function driveBackupSilent(){
+  if(!driveToken||!autoSyncEnabled)return;setDriveIcon('syncing');
+  try{await driveUpload(JSON.stringify({sales,backed_up:new Date().toISOString()}));const t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});driveSetStatus('↑ Auto-saved at '+t,'#2d6a4f');setDriveIcon('ok');localStorage.setItem('gdrive_last_sync',new Date().toISOString());}
+  catch(e){driveSetStatus('Auto-save failed','#c00');setDriveIcon('error');}
 }
-
-function saveDriveClientId() {
-  const val = document.getElementById('driveClientIdInput').value.trim();
-  if (!val) { showToast('Please paste your Client ID'); return; }
-  if (!val.includes('.apps.googleusercontent.com')) { showToast("Doesn't look like a valid Client ID"); return; }
-  GDRIVE_CLIENT_ID = val;
-  localStorage.setItem('gdrive_client_id', val);
-  document.getElementById('driveNeedsSetup').style.display = 'none';
-  document.getElementById('driveSignedOut').style.display = 'block';
-  showToast('✓ Client ID saved!');
+async function driveRestore(){
+  if(!driveToken){driveSetStatus('Not signed in','#c00');return;}
+  if(!confirm('Restore from Google Drive?\nThis will replace your current sales data.'))return;
+  const btn=document.getElementById('restoreBtn');if(btn)btn.disabled=true;
+  driveSetStatus('Restoring...','#4a90d9');
+  try{const l=await gapi.client.drive.files.list({spaces:'appDataFolder',q:`name='${BACKUP_FILENAME}'`,fields:'files(id)'});if(!l.result.files.length){driveSetStatus('No backup found','#c00');if(btn)btn.disabled=false;return;}const r=await fetch(`https://www.googleapis.com/drive/v3/files/${l.result.files[0].id}?alt=media`,{headers:{Authorization:'Bearer '+driveToken}});const raw=await r.json();if(raw.sales){sales=raw.sales;localStorage.setItem('infinity_sales',JSON.stringify(sales));}const t=raw.backed_up?new Date(raw.backed_up).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'?';driveSetStatus('✓ Restored ('+t+')','#2d6a4f');showToast('✓ Data restored!');if(activePage==='rep')renderReports();}
+  catch(e){driveSetStatus('Restore failed','#c00');}
+  if(btn)btn.disabled=false;
 }
-
-function setDriveIcon(state) {
-  const icons = { idle:'☁', syncing:'🔄', ok:'✅', error:'⚠️' };
-  document.getElementById('driveBtnIcon').textContent = icons[state] || '☁';
-}
-
-function driveSetStatus(msg, color) {
-  const el = document.getElementById('driveSyncStatus');
-  if (el) { el.textContent = msg; el.style.color = color || '#aaa'; }
-}
-
-function updateAutoSyncUI() {
-  const slider = document.getElementById('autoSyncSlider');
-  const thumb = document.getElementById('autoSyncThumb');
-  const toggle = document.getElementById('autoSyncToggle');
-  if (!slider) return;
-  toggle.checked = autoSyncEnabled;
-  slider.style.background = autoSyncEnabled ? 'var(--green)' : '#ccc';
-  thumb.style.left = autoSyncEnabled ? '23px' : '3px';
-}
-
-function toggleAutoSync(enabled) {
-  autoSyncEnabled = enabled;
-  localStorage.setItem('gdrive_autosync', enabled ? 'true' : 'false');
-  updateAutoSyncUI();
-  showToast(enabled ? '🔄 Auto-sync ON' : 'Auto-sync OFF');
-  if (enabled && driveToken) driveBackupSilent();
-}
-
-function scheduleAutoSync() {
-  if (!autoSyncEnabled || !driveToken) return;
-  clearTimeout(autoSyncTimer);
-  autoSyncTimer = setTimeout(() => driveBackupSilent(), 3000);
-}
-
-async function driveSignIn() {
-  if (!GDRIVE_CLIENT_ID) { initDrivePanel(); return; }
-  if (!document.getElementById('gapi-script')) {
-    const s = document.createElement('script');
-    s.id = 'gapi-script';
-    s.src = 'https://apis.google.com/js/api.js';
-    s.onload = () => {
-      gapi.load('client', async () => {
-        await gapi.client.init({ discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
-        gapiReady = true;
-        if (tokenClient) tokenClient.requestAccessToken({ prompt: '' });
-      });
-    };
-    document.head.appendChild(s);
-  }
-  if (!document.getElementById('gis-script')) {
-    const s2 = document.createElement('script');
-    s2.id = 'gis-script';
-    s2.src = 'https://accounts.google.com/gsi/client';
-    s2.onload = () => {
-      tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: GDRIVE_CLIENT_ID,
-        scope: GDRIVE_SCOPES,
-        callback: async (resp) => {
-          if (resp.error) { driveSetStatus('Sign in failed: ' + resp.error, '#e74c3c'); return; }
-          driveToken = resp.access_token;
-          gapi.client.setToken({ access_token: driveToken });
-          const profile = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: { Authorization: 'Bearer ' + driveToken }
-          }).then(r => r.json());
-          document.getElementById('driveUserInfo').textContent = '✓ Signed in as ' + (profile.email || 'Google User');
-          document.getElementById('driveSignedOut').style.display = 'none';
-          document.getElementById('driveSignedIn').style.display = 'block';
-          document.getElementById('driveDot').style.display = 'block';
-          const lastSync = localStorage.getItem('gdrive_last_sync');
-          driveSetStatus(lastSync
-            ? '✓ Last saved: ' + new Date(lastSync).toLocaleString('en-IN', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})
-            : 'Connected — ready to sync', '#3d7a5a');
-          setDriveIcon('ok');
-          updateAutoSyncUI();
-          if (autoSyncEnabled) driveBackupSilent();
-        }
-      });
-      if (gapiReady) tokenClient.requestAccessToken({ prompt: '' });
-    };
-    document.head.appendChild(s2);
-  } else if (tokenClient) {
-    tokenClient.requestAccessToken({ prompt: '' });
-  }
-}
-
-async function driveUpload(data) {
-  const list = await gapi.client.drive.files.list({
-    spaces: 'appDataFolder',
-    q: `name='${BACKUP_FILENAME}'`,
-    fields: 'files(id)'
-  });
-  const files = list.result.files;
-  const blob = new Blob([data], { type: 'application/json' });
-  const form = new FormData();
-  if (files.length > 0) {
-    form.append('metadata', new Blob([JSON.stringify({ name: BACKUP_FILENAME })], { type: 'application/json' }));
-    form.append('file', blob);
-    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${files[0].id}?uploadType=multipart`, {
-      method: 'PATCH', headers: { Authorization: 'Bearer ' + driveToken }, body: form
-    });
-  } else {
-    form.append('metadata', new Blob([JSON.stringify({ name: BACKUP_FILENAME, parents: ['appDataFolder'] })], { type: 'application/json' }));
-    form.append('file', blob);
-    await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-      method: 'POST', headers: { Authorization: 'Bearer ' + driveToken }, body: form
-    });
-  }
-}
-
-async function driveBackup() {
-  if (!driveToken) { driveSetStatus('Not signed in', '#e74c3c'); return; }
-  const btn = document.getElementById('backupBtn');
-  if (btn) btn.disabled = true;
-  driveSetStatus('Saving to Drive...', '#4a90d9');
-  setDriveIcon('syncing');
-  try {
-    await driveUpload(JSON.stringify({ sales, backed_up: new Date().toISOString() }));
-    const t = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-    driveSetStatus('✓ Saved at ' + t, '#3d7a5a');
-    setDriveIcon('ok');
-    showToast('✓ Saved to Google Drive!');
-    localStorage.setItem('gdrive_last_sync', new Date().toISOString());
-  } catch (e) {
-    driveSetStatus('Save failed: ' + e.message, '#e74c3c');
-    setDriveIcon('error');
-  }
-  if (btn) btn.disabled = false;
-}
-
-async function driveBackupSilent() {
-  if (!driveToken || !autoSyncEnabled) return;
-  setDriveIcon('syncing');
-  try {
-    await driveUpload(JSON.stringify({ sales, backed_up: new Date().toISOString() }));
-    const t = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-    driveSetStatus('↑ Auto-saved at ' + t, '#3d7a5a');
-    setDriveIcon('ok');
-    localStorage.setItem('gdrive_last_sync', new Date().toISOString());
-  } catch (e) {
-    driveSetStatus('Auto-save failed', '#e74c3c');
-    setDriveIcon('error');
-  }
-}
-
-async function driveRestore() {
-  if (!driveToken) { driveSetStatus('Not signed in', '#e74c3c'); return; }
-  if (!confirm('Restore from Google Drive?\nThis will replace your current sales data.')) return;
-  const btn = document.getElementById('restoreBtn');
-  if (btn) btn.disabled = true;
-  driveSetStatus('Restoring...', '#4a90d9');
-  try {
-    const list = await gapi.client.drive.files.list({
-      spaces: 'appDataFolder', q: `name='${BACKUP_FILENAME}'`, fields: 'files(id)'
-    });
-    if (!list.result.files.length) {
-      driveSetStatus('No backup found in Drive', '#e74c3c');
-      if (btn) btn.disabled = false; return;
-    }
-    const fileId = list.result.files[0].id;
-    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
-      headers: { Authorization: 'Bearer ' + driveToken }
-    });
-    const raw = await res.json();
-    if (raw.sales) {
-      sales = raw.sales;
-      localStorage.setItem('infinity_sales', JSON.stringify(sales));
-    }
-    const t = raw.backed_up
-      ? new Date(raw.backed_up).toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })
-      : '?';
-    driveSetStatus('✓ Restored (backup from ' + t + ')', '#3d7a5a');
-    showToast('✓ Data restored from Google Drive!');
-    if (activePage === 'rep') renderReports();
-  } catch (e) {
-    driveSetStatus('Restore failed: ' + e.message, '#e74c3c');
-  }
-  if (btn) btn.disabled = false;
-}
-
-function driveSignOut() {
-  driveToken = null;
-  document.getElementById('driveSignedOut').style.display = 'block';
-  document.getElementById('driveSignedIn').style.display = 'none';
-  document.getElementById('driveDot').style.display = 'none';
-  setDriveIcon('idle');
-  driveSetStatus('', '');
-}
-
-// Hook completeSale to trigger auto-sync after each sale
-const _origCompleteSale = completeSale;
+function driveSignOut(){driveToken=null;document.getElementById('driveSignedOut').style.display='block';document.getElementById('driveSignedIn').style.display='none';document.getElementById('driveDot').style.display='none';setDriveIcon('idle');driveSetStatus('','');}
 
 // ── INIT ──
-renderCart();
-renderTotals();
+renderCart();renderTotals();
 document.getElementById('itemName').focus();
 </script>
 </body>
