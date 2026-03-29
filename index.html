@@ -319,6 +319,7 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--
       <button class="btn-pdf"   onclick="downloadPDF(currentSale)">⬇ PDF</button>
       <button class="btn-print" onclick="window.print()">🖨 Print</button>
       <button class="btn-close" onclick="closeReceipt()">+ New Bill</button>
+      <button class="btn-print" onclick="sendWhatsAppBill(currentSale)">📲 WhatsApp</button>
     </div>
   </div>
 </div>
@@ -348,6 +349,41 @@ function showPage(p){
     document.getElementById('nav-'+id).classList.toggle('active',id===p);
   });
   if(p==='rep')renderReports();
+}
+
+
+  function sendWhatsAppBill(sale){
+  if(!sale || !sale.custPhone){
+    showToast("⚠ Enter customer phone");
+    return;
+  }
+
+  // Clean number
+  let phone = sale.custPhone.replace(/\D/g,'');
+
+  // Add India code if needed
+  if(phone.length === 10){
+    phone = "91" + phone;
+  }
+
+  // Build message
+  let msg = `✨ *INFINITY STORE* ✨\n`;
+  msg += `\n🧾 Bill: ${sale.id}`;
+  msg += `\n📅 ${new Date(sale.date).toLocaleString('en-IN')}`;
+  msg += `\n-------------------------\n`;
+
+  sale.items.forEach((item)=>{
+    msg += `• ${item.name} x${item.qty} = ₹${(item.price*item.qty).toFixed(2)}\n`;
+  });
+
+  msg += `-------------------------\n`;
+  msg += `💰 *Total: ₹${sale.total.toFixed(2)}*`;
+  msg += `\n\n🙏 Thank you for shopping!`;
+  msg += `\n📸 instagram.com/${INSTAGRAM_HANDLE}`;
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+  window.open(url, '_blank');
 }
 
 // ── ADD ITEM ──
